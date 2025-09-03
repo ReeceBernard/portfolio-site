@@ -97,7 +97,7 @@ export const Terminal: React.FC = () => {
             </div>
 
             <CommandOutput output={output} />
-            {/* ahh */}
+
             <CommandInput
               value={currentInput}
               onChange={handleInputChange}
