@@ -99,7 +99,6 @@ export const CommandInput: React.FC<CommandInputProps> = ({
       case "Tab":
         e.preventDefault();
         if (inlineSuggestion) {
-          const commandPart = value.trim().split(/\s+/)[0];
           const match = matches[0];
           const args = value.trim().split(/\s+/).slice(1);
           onChange(args.length > 0 ? `${match} ${args.join(" ")}` : match);
@@ -114,7 +113,6 @@ export const CommandInput: React.FC<CommandInputProps> = ({
           inputRef.current?.selectionStart === value.length
         ) {
           e.preventDefault();
-          const commandPart = value.trim().split(/\s+/)[0];
           const match = matches[0];
           const args = value.trim().split(/\s+/).slice(1);
           onChange(args.length > 0 ? `${match} ${args.join(" ")}` : match);
