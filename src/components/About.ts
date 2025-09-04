@@ -15,9 +15,9 @@ I'm passionate about building scalable, efficient applications and love tackling
 <span class="text-yellow-400">🌟 Interests:</span> Fintech, Full-Stack Development, AI/ML, System Design, Data Modeling, Mentoring
 
 <span class="text-yellow-400">📫 Connect with me:</span>
-• Email: <span class="text-cyan-400">${PERSONAL_INFO.email}</span>
-• LinkedIn: <span class="text-cyan-400">${PERSONAL_INFO.linkedin}</span>
-• GitHub: <span class="text-cyan-400">${PERSONAL_INFO.github}</span>
-• Website: <span class="text-cyan-400">${PERSONAL_INFO.website}</span>
+• Email: <a href="mailto:${PERSONAL_INFO.email}" class="text-cyan-400 underline">${PERSONAL_INFO.email}</a>
+• LinkedIn: <a href="${PERSONAL_INFO.linkedin}" class="text-cyan-400 underline" target="_blank" rel="noopener noreferrer">${PERSONAL_INFO.linkedin}</a>
+• GitHub: <a href="${PERSONAL_INFO.github}" class="text-cyan-400 underline" target="_blank" rel="noopener noreferrer">${PERSONAL_INFO.github}</a>
+• Website: <a class="text-cyan-400 underline" rel="noopener noreferrer">${PERSONAL_INFO.website}</a>
   `.trim();
 };

@@ -4,15 +4,15 @@ export const Resume = (): string => {
 <span class="text-gray-400">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
 <span class="text-cyan-400">PDF Format</span> (Recommended for ATS systems)
-<a href="/resume.pdf" class="text-blue-400 underline" download>📥 PDF Resume</a>
+<a href="/resume.pdf" target="_blank" class="text-blue-400 underline">📥 PDF Resume</a>
 <span class="text-gray-400">• ATS-friendly formatting
 • Print-ready layout
 • Most widely supported format</span>
 
 
 
-<span class="text-cyan-400">Online Profiles</span> (Always up-to-date)
-<a href="https://linkedin.com/in/reecebernard" class="text-blue-400 underline" target="_blank">🔗 LinkedIn Profile</a>
+<span class="text-cyan-400">Online Profiles</span>
+<a href="https://www.linkedin.com/in/maurice-reece-bernard1997/" class="text-blue-400 underline" target="_blank">🔗 LinkedIn Profile</a>
 <span class="text-gray-400">
 • Professional network visible</span>
 
@@ -25,10 +25,6 @@ export const Resume = (): string => {
 
 
 <span class="text-yellow-400">📅 Last Updated</span>
-<span class="text-green-400">September 2025</span> - Always kept current with latest experience and skills
-
-<span class="text-yellow-400">🔐 Privacy Note</span>
-<span class="text-gray-400">Personal contact information and references are available upon request
-for serious inquiries from legitimate companies with valid business emails.</span>
+<span class="text-green-400">September 2025</span>
   `.trim();
 };
