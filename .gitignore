@@ -24,11 +24,14 @@ dist-ssr
 *.sw?
 
 # Terraform sensitive files
-terraform.tfvars
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/*.tfvars
+terraform/*.tfplan
 *.tfstate
 *.tfstate.*
-.terraform/
-.terraform.lock.hcl
 
 
 # Build outputs
