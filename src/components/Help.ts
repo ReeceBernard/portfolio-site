@@ -19,7 +19,7 @@ export const Help = (): string => {
 <span class="text-cyan-400">date</span>        Show current date and time
 <span class="text-cyan-400">echo</span> [text] Echo back the provided text
 <span class="text-cyan-400">cat</span> [file]  Display file contents
-<span class="text-cyan-400">open</span> [url]  Open a URL in your default browser
+<span class="text-cyan-400">open</span> [url]  Open a URL in a new tab
 
 <span class="text-yellow-400">💡 Pro Tips:</span>
 • Use <kbd class="bg-gray-700 px-1 rounded text-xs">Tab</kbd> for auto-completion
