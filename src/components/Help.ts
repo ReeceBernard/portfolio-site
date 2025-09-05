@@ -7,8 +7,8 @@ export const Help = (): string => {
 <span class="text-green-400">skills</span>      View my technical skills and proficiencies  
 <span class="text-green-400">experience</span>  See my work experience and career history
 <span class="text-green-400">projects</span>    Check out my notable projects and contributions
-<span class="text-green-400">contact</span>     Get in touch with me (requires valid email)
-<span class="text-green-400">resume</span>      Download my resume in various formats
+<span class="text-green-400">contact</span>     Get in touch with me.
+<span class="text-green-400">resume</span>      View/download my resume
 <span class="text-green-400">clear</span>       Clear the terminal screen
 <span class="text-green-400">help</span>        Show this help menu
 
