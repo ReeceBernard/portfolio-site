@@ -25,7 +25,6 @@ export const Help = (): string => {
 • Use <kbd class="bg-gray-700 px-1 rounded text-xs">Tab</kbd> for auto-completion
 • Use <kbd class="bg-gray-700 px-1 rounded text-xs">↑↓</kbd> arrows for command history
 • Use <kbd class="bg-gray-700 px-1 rounded text-xs">Ctrl+L</kbd> to clear screen
-• Use <kbd class="bg-gray-700 px-1 rounded text-xs">Ctrl+C</kbd> to cancel input
 
 Type any command and press Enter to execute.
   `.trim();
