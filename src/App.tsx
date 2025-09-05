@@ -88,7 +88,7 @@ function App() {
           <p className="mb-1">
             Built with React, TypeScript, Vite & Tailwind CSS •
             <a
-              href="https://github.com/reecebernard/terminal-portfolio"
+              href="https://github.com/ReeceBernard/portfolio-site"
               className="text-green-400 hover:text-green-300 ml-1 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
