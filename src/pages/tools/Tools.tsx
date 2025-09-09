@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { RentalAnalysisTool } from './components/RentalAnalysis';
+import RentalAnalysisTool from './components/RentalAnalysis';
 
 
 export const ToolsPage: React.FC = () => {

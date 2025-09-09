@@ -162,6 +162,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
         <input
           ref={inputRef}
           type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
           value={displayValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
