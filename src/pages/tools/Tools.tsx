@@ -18,7 +18,7 @@ export const ToolsPage: React.FC = () => {
                 ← Back to Terminal
               </Link>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">Tools</h1>
+            <h1 className="text-xl font-bold text-gray-900">Analysis Tools</h1>
           </div>
         </div>
       </nav>
@@ -26,7 +26,6 @@ export const ToolsPage: React.FC = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Analysis Tools</h2>
           <p className="text-gray-600 max-w-2xl">
             A collection of analysis tools to help with investment decisions.
           </p>

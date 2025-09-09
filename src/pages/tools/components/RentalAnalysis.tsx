@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { cn } from '../../home/lib/utils';
+import { CurrencyInput } from '../../../components/CurrencyInput';
 
 
 interface PropertyData {
@@ -119,12 +120,11 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Purchase Price
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.purchasePrice}
-              onChange={(e) => updateField('purchasePrice', Number(e.target.value))}
+              onChange={(value) => updateField('purchasePrice', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="300000"
+              placeholder="$300,000"
             />
           </div>
 
@@ -189,10 +189,9 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Closing Costs
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.closingCosts}
-              onChange={(e) => updateField('closingCosts', Number(e.target.value))}
+              onChange={(value) => updateField('closingCosts', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3000"
             />
@@ -207,10 +206,9 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Monthly Rent
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.monthlyRent}
-              onChange={(e) => updateField('monthlyRent', Number(e.target.value))}
+              onChange={(value) => updateField('monthlyRent', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="2500"
             />
@@ -225,10 +223,9 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Property Taxes
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.propertyTaxes}
-              onChange={(e) => updateField('propertyTaxes', Number(e.target.value))}
+              onChange={(value) => updateField('propertyTaxes', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3600"
             />
@@ -238,10 +235,9 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Insurance
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.insurance}
-              onChange={(e) => updateField('insurance', Number(e.target.value))}
+              onChange={(value) => updateField('insurance', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="1200"
             />
@@ -251,10 +247,9 @@ export const RentalAnalysisTool: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Maintenance & Repairs
             </label>
-            <input
-              type="number"
+            <CurrencyInput
               value={data.maintenance}
-              onChange={(e) => updateField('maintenance', Number(e.target.value))}
+              onChange={(value) => updateField('maintenance', value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3000"
             />
