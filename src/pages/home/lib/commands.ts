@@ -19,9 +19,22 @@ export const commands: CommandRegistry = {
   whoami: () => WhoAmI(),
   pwd: () => "/home/reecebernard",
   ls: () =>
-    "about.txt  skills.txt  experience.txt  projects.txt  contact.txt  resume.pdf",
+    "/tools about.txt  skills.txt  experience.txt  projects.txt  contact.txt  resume.pdf",
   date: () => new Date().toString(),
   echo: (args: string[]) => args.join(" "),
+  cd: (args: string[]) => {
+    const target = args[0];
+    
+    if (!target) {
+      return "Usage: cd <directory>";
+    }
+
+    if (target === "tools" || target === "tools/") {
+      return "tools";
+    }
+
+    return `cd: ${target}: No such directory`;
+  },
   cat: (args: string[]) => {
     const file = args[0];
     const fileCommands: Record<string, string> = {
