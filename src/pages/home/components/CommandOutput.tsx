@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "../lib/utils";
-import type { CommandOutput as CommandOutputType } from "../types";
+import type { CommandOutput as CommandOutputType } from "../../../types";
 
 interface CommandOutputProps {
   output: CommandOutputType[];

@@ -1,5 +1,6 @@
 import { PERSONAL_INFO } from "../lib/contants";
 
+
 export const About = (): string => {
   return `
 <span class="text-yellow-400 font-bold">About Reece</span>

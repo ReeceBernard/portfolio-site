@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { commands } from "../lib/commands";
+import { commands } from "../pages/home/lib/commands";
 import type { CommandOutput } from "../types";
 
 export const useTerminal = () => {
