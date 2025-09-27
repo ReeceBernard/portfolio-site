@@ -60,7 +60,6 @@ export default function MortgageInput({
     const series = getFredSeries(term);
     const proxyUrl = getProxyUrl();
 
-    // Skip if no proxy URL configured
     if (!proxyUrl) {
       console.log("No proxy URL configured, using fallback rates");
       const fallbackRates = {
@@ -72,7 +71,6 @@ export default function MortgageInput({
       return;
     }
 
-    // Check cache first
     const cachedRate = getCachedRate(series);
     if (cachedRate) {
       console.log(`Using cached ${series} rate: ${cachedRate.rate}%`);
@@ -92,11 +90,9 @@ export default function MortgageInput({
         const data: FredApiResponse = await response.json();
 
         if (data.rate && !isNaN(data.rate)) {
-          // Update rate
           onRateChange(Number(data.rate.toFixed(2)));
           setLastFetchedTerm(term);
 
-          // Cache the response
           setCachedRates((prev) => ({
             ...prev,
             [series]: data,
@@ -111,7 +107,6 @@ export default function MortgageInput({
     } catch (err) {
       console.log("Unable to fetch from proxy, using fallback");
 
-      // Use fallback rates
       const fallbackRates = {
         MORTGAGE15US: 6.8,
         MORTGAGE30US: 7.2,
@@ -121,7 +116,6 @@ export default function MortgageInput({
       onRateChange(fallbackRate);
       setLastFetchedTerm(term);
 
-      // Cache the fallback response
       const fallbackResponse: FredApiResponse = {
         series,
         rate: fallbackRate,
