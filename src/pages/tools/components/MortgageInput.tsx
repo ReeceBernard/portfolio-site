@@ -14,6 +14,11 @@ interface FredApiResponse {
   timestamp: string;
   fallback?: boolean;
 }
+
+const FALLBACK_RATES = {
+  MORTGAGE15US: 6.8,
+  MORTGAGE30US: 7.2,
+};
 export default function MortgageInput({
   loanTerm,
   currentRate,
@@ -38,8 +43,8 @@ export default function MortgageInput({
     if (process.env.NODE_ENV == "development") {
       return "http://localhost:3000";
     }
-    // This did not update?
-    return "rb-dev-api.vercel.app";
+
+    return "https://rb-dev-api.vercel.app";
   };
 
   const getCachedRate = (series: string): FredApiResponse | null => {
@@ -63,11 +68,8 @@ export default function MortgageInput({
 
     if (!proxyUrl) {
       console.log("No proxy URL configured, using fallback rates");
-      const fallbackRates = {
-        MORTGAGE15US: 6.8,
-        MORTGAGE30US: 7.2,
-      };
-      onRateChange(fallbackRates[series] || 7.0);
+
+      onRateChange(FALLBACK_RATES[series] || 7.0);
       setLastFetchedTerm(term);
       return;
     }
@@ -108,12 +110,7 @@ export default function MortgageInput({
     } catch (err) {
       console.log("Unable to fetch from proxy, using fallback");
 
-      const fallbackRates = {
-        MORTGAGE15US: 6.8,
-        MORTGAGE30US: 7.2,
-      };
-
-      const fallbackRate = fallbackRates[series] || 7.0;
+      const fallbackRate = FALLBACK_RATES[series];
       onRateChange(fallbackRate);
       setLastFetchedTerm(term);
 
