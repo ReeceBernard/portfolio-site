@@ -38,22 +38,6 @@ jobs:
         run: |
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
-      - name: Upload Resume to S3
-        run: |
-          if [ -f "resume.pdf" ]; then
-            aws s3 cp resume.pdf s3://${{ secrets.S3_BUCKET_NAME }}/resume.pdf --content-type application/pdf
-            echo "Resume uploaded successfully"
-          else
-            echo "resume.pdf not found in root directory"
-          fi
-
       - name: Invalidate CloudFront
         run: |
-          # Get CloudFront distribution ID by searching for our bucket origin
-          DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Origins.Items[0].DomainName=='${{ secrets.S3_BUCKET_NAME }}.s3.amazonaws.com'].Id" --output text)
-          if [ -n "$DISTRIBUTION_ID" ] && [ "$DISTRIBUTION_ID" != "None" ]; then
-            echo "Invalidating CloudFront distribution: $DISTRIBUTION_ID"
-            aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
-          else
-            echo "No CloudFront distribution found for this bucket"
-          fi
+            aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
