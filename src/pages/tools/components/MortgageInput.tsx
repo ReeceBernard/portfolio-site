@@ -38,7 +38,7 @@ export default function MortgageInput({
     if (process.env.NODE_ENV == "development") {
       return "http://localhost:3000";
     }
-    return "https://rb-dev-hj7yghy6b-reece-bernards-projects.vercel.app";
+    return "rb-dev-api.vercel.app";
   };
 
   const getCachedRate = (series: string): FredApiResponse | null => {
