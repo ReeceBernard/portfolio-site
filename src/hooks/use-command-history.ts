@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
-import { useLocalStorage } from "./use-local-storage";
+import { TTL, useLocalStorage } from "./use-local-storage";
 
 export const useCommandHistory = () => {
   const [history, setHistory] = useLocalStorage<string[]>(
     "terminal-history",
-    []
+    [],
+    TTL.ONE_MONTH
   );
   const [historyIndex, setHistoryIndex] = useState(-1);
 
