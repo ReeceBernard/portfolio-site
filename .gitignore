@@ -31,3 +31,4 @@ terraform/*
 # Build outputs
 build/
 dist/
+.env

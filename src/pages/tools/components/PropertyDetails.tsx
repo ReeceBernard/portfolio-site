@@ -1,26 +1,32 @@
 import { CurrencyInput } from "../../../components/CurrencyInput";
 import type { PropertyData } from "../types";
+import MortgageInput from "./MortgageInput";
 
 interface PropertyDetailsProps {
   data: PropertyData;
   updateField: (field: keyof PropertyData, value: number) => void;
 }
 
-export default function PropertyDetails({ data, updateField }: PropertyDetailsProps) {
+export default function PropertyDetails({
+  data,
+  updateField,
+}: PropertyDetailsProps) {
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Property Details */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">Property Details</h4>
-          
+          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">
+            Property Details
+          </h4>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Purchase Price
             </label>
             <CurrencyInput
               value={data.purchasePrice}
-              onChange={(value) => updateField('purchasePrice', value)}
+              onChange={(value) => updateField("purchasePrice", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="300000"
             />
@@ -36,7 +42,9 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
               max="50"
               step="1"
               value={data.downPayment}
-              onChange={(e) => updateField('downPayment', Number(e.target.value))}
+              onChange={(e) =>
+                updateField("downPayment", Number(e.target.value))
+              }
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -45,24 +53,11 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Interest Rate: {data.interestRate.toFixed(2)}%
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="20"
-              step="0.01"
-              value={data.interestRate}
-              onChange={(e) => updateField('interestRate', Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-            />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>0%</span>
-              <span>20%</span>
-            </div>
-          </div>
+          <MortgageInput
+            loanTerm={data.loanTerm}
+            currentRate={data.interestRate}
+            onRateChange={(rate) => updateField("interestRate", rate)}
+          />
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -70,7 +65,7 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
             </label>
             <select
               value={data.loanTerm}
-              onChange={(e) => updateField('loanTerm', Number(e.target.value))}
+              onChange={(e) => updateField("loanTerm", Number(e.target.value))}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-gray-900"
             >
               <option value={5}>5 years</option>
@@ -89,7 +84,7 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
             </label>
             <CurrencyInput
               value={data.closingCosts}
-              onChange={(value) => updateField('closingCosts', value)}
+              onChange={(value) => updateField("closingCosts", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3000"
             />
@@ -98,15 +93,17 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
 
         {/* Income & Appreciation */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">Income & Appreciation</h4>
-          
+          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">
+            Income & Appreciation
+          </h4>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Monthly Rent
             </label>
             <CurrencyInput
               value={data.monthlyRent}
-              onChange={(value) => updateField('monthlyRent', value)}
+              onChange={(value) => updateField("monthlyRent", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="2500"
             />
@@ -122,7 +119,9 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
               max="10"
               step="0.1"
               value={data.rentAppreciation}
-              onChange={(e) => updateField('rentAppreciation', Number(e.target.value))}
+              onChange={(e) =>
+                updateField("rentAppreciation", Number(e.target.value))
+              }
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -133,7 +132,8 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Property Appreciation: {data.propertyAppreciation.toFixed(1)}%/year
+              Property Appreciation: {data.propertyAppreciation.toFixed(1)}
+              %/year
             </label>
             <input
               type="range"
@@ -141,7 +141,9 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
               max="15"
               step="0.1"
               value={data.propertyAppreciation}
-              onChange={(e) => updateField('propertyAppreciation', Number(e.target.value))}
+              onChange={(e) =>
+                updateField("propertyAppreciation", Number(e.target.value))
+              }
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -153,15 +155,17 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
 
         {/* Expenses */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">Annual Expenses</h4>
-          
+          <h4 className="font-semibold text-gray-900 border-b pb-2 text-lg">
+            Annual Expenses
+          </h4>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Property Taxes
             </label>
             <CurrencyInput
               value={data.propertyTaxes}
-              onChange={(value) => updateField('propertyTaxes', value)}
+              onChange={(value) => updateField("propertyTaxes", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3600"
             />
@@ -173,7 +177,7 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
             </label>
             <CurrencyInput
               value={data.insurance}
-              onChange={(value) => updateField('insurance', value)}
+              onChange={(value) => updateField("insurance", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="1200"
             />
@@ -185,7 +189,7 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
             </label>
             <CurrencyInput
               value={data.maintenance}
-              onChange={(value) => updateField('maintenance',value)}
+              onChange={(value) => updateField("maintenance", value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="3000"
             />
@@ -201,7 +205,7 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
               max="20"
               step="1"
               value={data.vacancy}
-              onChange={(e) => updateField('vacancy', Number(e.target.value))}
+              onChange={(e) => updateField("vacancy", Number(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -220,7 +224,9 @@ export default function PropertyDetails({ data, updateField }: PropertyDetailsPr
               max="25"
               step="1"
               value={data.propertyManagement}
-              onChange={(e) => updateField('propertyManagement', Number(e.target.value))}
+              onChange={(e) =>
+                updateField("propertyManagement", Number(e.target.value))
+              }
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
