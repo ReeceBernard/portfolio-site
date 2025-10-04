@@ -4,7 +4,7 @@ export const Resume = (): string => {
 <span class="text-gray-400">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
 <span class="text-cyan-400">PDF Format</span> (Recommended for ATS systems)
-<a href="/resume.pdf" target="_blank" class="text-blue-400 underline">📥 PDF Resume</a>
+<a href="https://reece-bernard-portfolio.s3.us-east-1.amazonaws.com/resume.pdf" target="_blank" class="text-blue-400 underline">📥 PDF Resume</a>
 <span class="text-gray-400">• ATS-friendly formatting
 • Print-ready layout
 • Most widely supported format</span>
