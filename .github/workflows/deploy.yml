@@ -38,15 +38,6 @@ jobs:
         run: |
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
-      - name: Upload Resume to S3
-        run: |
-          if [ -f "resume.pdf" ]; then
-            aws s3 cp resume.pdf s3://${{ secrets.S3_BUCKET_NAME }}/resume.pdf --content-type application/pdf
-            echo "Resume uploaded successfully"
-          else
-            echo "resume.pdf not found in root directory"
-          fi
-
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
