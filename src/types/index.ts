@@ -32,8 +32,8 @@ export interface Skill {
     | "framework"
     | "tool"
     | "cloud"
-    | "database"
-    | "specialty";
+    | "datastore"
+    | "data engineering";
 }
 
 export interface Experience {
@@ -49,11 +49,18 @@ export interface Experience {
 
 export interface Project {
   name: string;
+  slug: string;
   description: string;
   technologies: string[];
   github?: string;
   demo?: string;
   highlights: string[];
+  writeup?: {
+    overview: string;
+    techDetails?: string;
+    lessons?: string[];
+    futureIdeas?: string[];
+  };
 }
 
 export interface ContactForm {
