@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Scenario, ScenarioParams, RentTier, ResolvedAddress, RentalComp, SalesComp } from '../types';
 import { ScenarioCard } from './ScenarioCard';
 import { ScenarioEditor } from './ScenarioEditor';
@@ -28,7 +28,19 @@ export const ScenariosStep: React.FC<Props> = ({
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
+  const addMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (addMenuRef.current && !addMenuRef.current.contains(e.target as Node)) {
+        setAddOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const editingScenario = editingId ? scenarios.find((s) => s.id === editingId) : null;
 
@@ -50,23 +62,29 @@ export const ScenariosStep: React.FC<Props> = ({
           <p className="text-sm text-gray-500 mt-0.5">{subjectAddress.split(',').slice(0, 2).join(',')}</p>
         </div>
         <div className="flex gap-2">
-          <div className="relative">
-            <select
-              onChange={(e) => { if (e.target.value) { onAddScenario(e.target.value as RentTier); e.target.value = ''; } }}
-              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-              defaultValue=""
+          <div className="relative" ref={addMenuRef}>
+            <button
+              onClick={() => setAddOpen((v) => !v)}
+              className="px-2 sm:px-3 py-2 border border-green-600 rounded-md text-sm text-green-600 bg-white hover:bg-green-50 font-medium flex items-center gap-1.5"
             >
-              <option value="" disabled>+ Add Scenario</option>
-              <option value="conservative">Conservative</option>
-              <option value="median">Median</option>
-              <option value="optimistic">Optimistic</option>
-            </select>
-            <div className="px-2 sm:px-3 py-2 border border-green-600 rounded-md text-sm text-green-600 bg-white hover:bg-green-50 font-medium flex items-center gap-1.5 pointer-events-none">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
               <span className="hidden sm:inline">Add Scenario</span>
-            </div>
+            </button>
+            {addOpen && (
+              <div className="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                {(['conservative', 'median', 'optimistic'] as RentTier[]).map((tier) => (
+                  <button
+                    key={tier}
+                    onClick={() => { onAddScenario(tier); setAddOpen(false); }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 capitalize first:rounded-t-md last:rounded-b-md"
+                  >
+                    {tier}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <button
             onClick={handleDownload}
