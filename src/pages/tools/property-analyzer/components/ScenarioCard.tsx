@@ -21,17 +21,19 @@ export const ScenarioCard: React.FC<Props> = ({ scenario, onEdit, onDelete, canD
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h3 className="font-bold text-gray-900">{scenario.name}</h3>
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tierBadge[scenario.tier]}`}>
-            {scenario.tier}
-          </span>
+      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="font-bold text-gray-900">{scenario.name}</h3>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tierBadge[scenario.tier]}`}>
+              {scenario.tier}
+            </span>
+          </div>
           <span className="text-sm text-gray-500">
             ${scenario.params.monthlyGrossRent.toLocaleString()}/mo
           </span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <button
             onClick={onEdit}
             className="text-sm px-3 py-1 border border-green-600 rounded-md bg-white hover:bg-green-50 text-green-600 transition-colors"

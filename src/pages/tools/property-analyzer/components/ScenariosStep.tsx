@@ -53,7 +53,7 @@ export const ScenariosStep: React.FC<Props> = ({
           <div className="relative">
             <select
               onChange={(e) => { if (e.target.value) { onAddScenario(e.target.value as RentTier); e.target.value = ''; } }}
-              className="px-3 py-2 border border-green-600 rounded-md text-sm text-green-600 bg-white hover:bg-green-50 cursor-pointer appearance-none pr-8 font-medium"
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               defaultValue=""
             >
               <option value="" disabled>+ Add Scenario</option>
@@ -61,11 +61,18 @@ export const ScenariosStep: React.FC<Props> = ({
               <option value="median">Median</option>
               <option value="optimistic">Optimistic</option>
             </select>
+            <div className="px-2 sm:px-3 py-2 border border-green-600 rounded-md text-sm text-green-600 bg-white hover:bg-green-50 font-medium flex items-center gap-1.5 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span className="hidden sm:inline">Add Scenario</span>
+            </div>
           </div>
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white text-sm font-semibold rounded-md transition-colors flex items-center gap-2"
+            title="Download Report"
+            className="px-2 sm:px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white text-sm font-semibold rounded-md transition-colors flex items-center gap-2"
           >
             {downloading ? (
               <>
@@ -73,9 +80,16 @@ export const ScenariosStep: React.FC<Props> = ({
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
-                Generating...
+                <span className="hidden sm:inline">Generating...</span>
               </>
-            ) : '↓ Download Report'}
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                </svg>
+                <span className="hidden sm:inline">Download Report</span>
+              </>
+            )}
           </button>
         </div>
       </div>

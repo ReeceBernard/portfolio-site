@@ -141,16 +141,16 @@ export default function YearlyTable({ data, results }: YearlyTableProps) {
           <thead>
             <tr className="border-b border-gray-200">
               <th className="text-left py-3 px-2 font-semibold text-gray-900">Year</th>
-              <th className="text-right py-3 px-2 font-semibold text-gray-900">Principal</th>
+              <th className="text-right py-3 px-2 font-semibold text-gray-900 hidden sm:table-cell">Principal</th>
               <th className="text-right py-3 px-2 font-semibold text-gray-900">Cash Flow</th>
-              <th className="text-right py-3 px-2 font-semibold text-gray-900">Total Return</th>
-              <th className="text-right py-3 px-2 font-semibold text-gray-900">Return %</th>
+              <th className="text-right py-3 px-2 font-semibold text-gray-900 hidden sm:table-cell">Total Return</th>
+              <th className="text-right py-3 px-2 font-semibold text-gray-900 hidden md:table-cell">Return %</th>
               <th className="text-right py-3 px-2 font-semibold text-gray-900">Equity</th>
-              <th className="text-right py-3 px-2 font-semibold text-gray-900">Equity Multiple</th>
+              <th className="text-right py-3 px-2 font-semibold text-gray-900 hidden md:table-cell">Equity Multiple</th>
             </tr>
           </thead>
           <tbody>
-            {displayData.map((row) => 
+            {displayData.map((row) =>
               row.isPlaceholder ? (
                 <tr key="placeholder" className="border-b border-gray-100">
                   <td className="py-3 px-2 text-center font-medium text-gray-500" colSpan={7}>
@@ -160,22 +160,22 @@ export default function YearlyTable({ data, results }: YearlyTableProps) {
               ) : (
                 <tr key={row.index} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="py-3 px-2 font-medium text-gray-900">{row.year}</td>
-                  <td className="py-3 px-2 text-right font-medium text-gray-900">
+                  <td className="py-3 px-2 text-right font-medium text-gray-900 hidden sm:table-cell">
                     {formatCurrency(row.principal)}
                   </td>
                   <td className="py-3 px-2 text-right font-medium text-gray-900">
                     {formatCurrency(row.cashFlow)}
                   </td>
-                  <td className="py-3 px-2 text-right font-medium text-gray-900">
+                  <td className="py-3 px-2 text-right font-medium text-gray-900 hidden sm:table-cell">
                     {formatCurrency(row.totalReturn)}
                   </td>
-                  <td className="py-3 px-2 text-right font-medium text-gray-900">
+                  <td className="py-3 px-2 text-right font-medium text-gray-900 hidden md:table-cell">
                     {row.totalReturnPercent.toFixed(2)}%
                   </td>
                   <td className="py-3 px-2 text-right font-medium text-gray-900">
                     {formatCurrency(row.equity)}
                   </td>
-                  <td className="py-3 px-2 text-right font-medium text-gray-900">
+                  <td className="py-3 px-2 text-right font-medium text-gray-900 hidden md:table-cell">
                     {row.equityMultiple.toFixed(2)}x
                   </td>
                 </tr>

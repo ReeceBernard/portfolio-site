@@ -100,11 +100,11 @@ export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBa
 
       <div>
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Rent estimates</h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {tiers.map(({ tier, label, color }) => (
-            <div key={tier} className={`border-2 rounded-lg p-4 text-center transition-colors ${color}`}>
-              <div className="font-semibold text-gray-900">{label}</div>
-              <div className="text-2xl font-bold text-gray-900 mt-2">
+            <div key={tier} className={`border-2 rounded-lg p-2 sm:p-4 text-center transition-colors ${color}`}>
+              <div className="font-semibold text-gray-900 text-xs sm:text-sm">{label}</div>
+              <div className="text-lg sm:text-2xl font-bold text-gray-900 mt-1 sm:mt-2">
                 ${analysis.rentRanges[tier].toLocaleString()}
               </div>
               <div className="text-xs text-gray-500">/mo</div>

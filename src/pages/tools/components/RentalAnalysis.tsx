@@ -192,7 +192,7 @@ export default function RentalAnalysisTool() {
   }, [data, results]);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto p-4">
+    <div className="space-y-6 max-w-7xl mx-auto px-2 py-4 sm:px-4">
       <PropertyDetails data={data} updateField={updateField} />
       <AnalysisCards data={data} results={results} />
       <ChartSection chartData={chartData} />
