@@ -1,3 +1,4 @@
+api-dist
 # Logs
 logs
 *.log
@@ -31,4 +32,6 @@ terraform/*
 # Build outputs
 build/
 dist/
+api-dist/
 .env
+.vercel
