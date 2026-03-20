@@ -8,8 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "clean": "rm -rf dist && rm -rf node_modules",
-    "build:api": "mkdir -p api-dist"
+    "clean": "rm -rf dist && rm -rf node_modules"
   },
   "dependencies": {
     "@types/leaflet": "^1.9.21",
