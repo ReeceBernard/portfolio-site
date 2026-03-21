@@ -5,7 +5,7 @@ import type {
   Scenario, ScenarioParams, RentTier, HistoryItem,
 } from './types';
 import { buildScenario } from './lib/calculations';
-import { analyzeProperty } from './lib/claude';
+import { analyzeProperty, fetchCallsRemaining } from './lib/claude';
 import { useLocalStorage, TTL } from '../../../hooks/use-local-storage';
 import { AddressStep } from './components/AddressStep';
 import { CompsStep } from './components/CompsStep';
@@ -75,7 +75,7 @@ export const PropertyAnalyzerPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [interestRate, setInterestRate] = useState(FALLBACK_RATE);
-  const [apiKey, setApiKey] = useLocalStorage('property-analyzer-api-key', '', TTL.ONE_WEEK);
+  const [callsRemaining, setCallsRemaining] = useState<number | null>(null);
   const [history, setHistory] = useLocalStorage<HistoryItem[]>('property-analyzer-history', [], TTL.ONE_MONTH);
   const [cachedRates, setCachedRates] = useLocalStorage(
     'fred-rate-cache',
@@ -112,11 +112,16 @@ export const PropertyAnalyzerPage: React.FC = () => {
       .catch(() => setInterestRate(FALLBACK_RATE));
   }, []);
 
+  useEffect(() => {
+    fetchCallsRemaining().then(setCallsRemaining);
+  }, []);
+
   const handleAnalyze = async (address: ResolvedAddress) => {
     setLoading(true);
     setError(null);
     try {
-      const analysis = await analyzeProperty(address, apiKey);
+      const { result: analysis, callsRemaining: remaining } = await analyzeProperty(address);
+      setCallsRemaining(remaining);
       const scenarios = TIERS.map((tier) =>
         buildScenario(
           crypto.randomUUID(),
@@ -215,13 +220,12 @@ export const PropertyAnalyzerPage: React.FC = () => {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {state.step === 'address' && (
           <AddressStep
-            apiKey={apiKey}
-            onApiKeyChange={setApiKey}
             onSubmit={handleAnalyze}
             loading={loading}
             error={error}
             history={history}
             onLoadHistory={handleLoadHistory}
+            callsRemaining={callsRemaining}
           />
         )}
 

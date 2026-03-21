@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ResolvedAddress, ClaudeAnalysisResult, RentTier } from '../types';
+import type { ResolvedAddress, ClaudeAnalysisResult, RentTier, SubjectProperty } from '../types';
 import { CompsMap } from './CompsMap';
 
 interface Props {
@@ -15,14 +15,43 @@ const tiers: { tier: RentTier; label: string; color: string }[] = [
   { tier: 'optimistic', label: 'Optimistic', color: 'border-purple-200 bg-purple-50 hover:bg-purple-100' },
 ];
 
+function fmt(val: number | null | undefined, suffix = '') {
+  return val != null ? `${val.toLocaleString()}${suffix}` : '—';
+}
+
+function PropertyStats({ p }: { p: SubjectProperty }) {
+  const stats = [
+    { label: 'Beds', value: fmt(p.bedrooms) },
+    { label: 'Baths', value: fmt(p.bathrooms) },
+    { label: 'Living Area', value: p.squareFeet != null ? `${p.squareFeet.toLocaleString()} sqft` : '—' },
+    { label: 'Lot Size', value: p.lotSizeSqFt != null ? `${p.lotSizeSqFt.toLocaleString()} sqft` : '—' },
+    { label: 'Year Built', value: p.yearBuilt != null ? String(p.yearBuilt) : '—' },
+    { label: 'Type', value: p.propertyType ?? '—' },
+    { label: 'Zoning', value: p.zoning ?? '—' },
+  ];
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {stats.map(({ label, value }) => (
+        <div key={label} className="bg-white border border-gray-200 rounded-lg px-3 py-2.5">
+          <div className="text-xs text-gray-400 mb-0.5">{label}</div>
+          <div className="text-sm font-semibold text-gray-800">{value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBack }) => {
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-gray-900">{subject.displayName.split(',').slice(0, 2).join(',')}</h2>
         <p className="text-gray-500 text-sm mt-1">Est. value: <span className="font-semibold text-gray-800">${analysis.estimatedValue.toLocaleString()}</span></p>
-        <p className="text-gray-600 text-sm mt-2 italic">{analysis.summary}</p>
       </div>
+
+      {analysis.subjectProperty && <PropertyStats p={analysis.subjectProperty} />}
+
+      <p className="text-gray-600 text-sm italic">{analysis.summary}</p>
 
       <CompsMap subject={subject} comps={analysis.comps} salesComps={analysis.salesComps ?? []} />
 

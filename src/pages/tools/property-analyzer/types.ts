@@ -36,7 +36,18 @@ export interface SalesComp {
   saleDate?: string; // YYYY-MM
 }
 
+export interface SubjectProperty {
+  bedrooms: number | null;
+  bathrooms: number | null;
+  squareFeet: number | null;
+  lotSizeSqFt: number | null;
+  yearBuilt: number | null;
+  propertyType: string | null;
+  zoning: string | null;
+}
+
 export interface ClaudeAnalysisResult {
+  subjectProperty: SubjectProperty;
   estimatedValue: number;
   rentRanges: { conservative: number; median: number; optimistic: number };
   comps: RentalComp[];
