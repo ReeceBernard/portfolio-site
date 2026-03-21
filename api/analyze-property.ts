@@ -152,10 +152,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 Use these as anchors for your rent estimates. Your rentRanges and comp monthlyRent values should be consistent with these HUD figures.\n`
     : "";
 
-  const system = `You are a real estate data analyst. Given a US property address and its coordinates, return rental market analysis as raw JSON only — no markdown, no code fences, no explanation.`;
+  const system = `You are a real estate data analyst. Given a US property address and its coordinates, return rental market analysis as raw JSON only — no markdown, no code fences, no explanation. Be precise and consistent: the same property analyzed twice should produce very similar numbers.`;
 
   const searchSection = searchContext
-    ? `\nWeb search results for this property (extract beds, baths, sqft, year built, lot size, property type from this — prefer these over your training data for the subjectProperty fields):\n---\n${searchContext}\n---\n`
+    ? `\nWeb search results for this property — these are from Zillow, Redfin, Trulia and public records and are accurate. You MUST use these values for the subjectProperty fields. Do not substitute your own estimates for any field that appears in these results:\n---\n${searchContext}\n---\n`
     : "";
 
   const user = `Analyze this US rental property:
@@ -167,9 +167,9 @@ Return a JSON object with this exact shape:
   "subjectProperty": {
     "bedrooms": <number or null>,
     "bathrooms": <number or null>,
-    "squareFeet": <number or null, interior living area>,
+    "squareFeet": <number or null, interior living area — use the search results value exactly if present>,
     "lotSizeSqFt": <number or null, lot/yard size in square feet>,
-    "yearBuilt": <number or null, year the home was built>,
+    "yearBuilt": <number or null, year the home was built — use the search results value exactly if present>,
     "propertyType": <string or null, e.g. "Single Family", "Condo", "Townhouse", "Multi-Family">,
     "zoning": <string or null, e.g. "R-1", "R-2", "MF-1" — use your best estimate from training data>
   },
@@ -181,9 +181,9 @@ Return a JSON object with this exact shape:
   },
   "comps": [
     {
-      "address": <string, full street address>,
-      "lat": <number, latitude>,
-      "lon": <number, longitude>,
+      "address": <string, full street address including house number — must be a real address, do not fabricate>,
+      "lat": <number, latitude — must be accurate to 4 decimal places and within 0.5 miles of the subject>,
+      "lon": <number, longitude — must be accurate to 4 decimal places and within 0.5 miles of the subject>,
       "bedrooms": <number>,
       "bathrooms": <number>,
       "monthlyRent": <number>,
@@ -193,9 +193,9 @@ Return a JSON object with this exact shape:
   ],
   "salesComps": [
     {
-      "address": <string, full street address>,
-      "lat": <number, latitude>,
-      "lon": <number, longitude>,
+      "address": <string, full street address including house number — must be a real address, do not fabricate>,
+      "lat": <number, latitude — must be accurate to 4 decimal places and within 0.5 miles of the subject>,
+      "lon": <number, longitude — must be accurate to 4 decimal places and within 0.5 miles of the subject>,
       "bedrooms": <number>,
       "bathrooms": <number>,
       "salePrice": <number, sale price in USD>,
@@ -209,9 +209,10 @@ Return a JSON object with this exact shape:
 Requirements:
 - Provide 4-6 rental comps within ~0.5 mile radius of the subject property, same property type
 - Provide 3-5 recent sales comps within ~0.5 mile radius, same property type — these inform what to pay for the home
-- Each comp must have accurate lat/lon coordinates near the subject
-- Base all rent estimates on current market data; the three rent tiers should be tightly clustered (conservative and optimistic within ~10-15% of median), not a wide spread
-- The comps' monthlyRent values should be consistent with and inform the rentRanges above
+- All comp addresses must be real streets that exist near the subject — do not invent addresses
+- Comp lat/lon must be geographically accurate and within 0.5 miles of the subject coordinates
+- The three rent tiers must be tightly clustered: conservative and optimistic within 10-15% of median — not a wide spread
+- The comps' monthlyRent values must be consistent with and inform the rentRanges
 - For listingDate and saleDate, provide the actual or estimated YYYY-MM. Prefer recent data; always include the date so users know the data age`;
 
   try {
@@ -224,7 +225,8 @@ Requirements:
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 2048,
+        max_tokens: 4096,
+        temperature: 0.3,
         system,
         messages: [{ role: "user", content: user }],
       }),
