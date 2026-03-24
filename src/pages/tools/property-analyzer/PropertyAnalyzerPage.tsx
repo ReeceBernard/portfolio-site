@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type {
   AnalyzerStep, ResolvedAddress, ClaudeAnalysisResult,
@@ -7,6 +7,7 @@ import type {
 import { buildScenario } from './lib/calculations';
 import { analyzeProperty, fetchCallsRemaining } from './lib/claude';
 import { useLocalStorage, TTL } from '../../../hooks/use-local-storage';
+import { LRUCache, loadHistoryCache, saveHistoryCache } from './lib/lru-cache';
 import { AddressStep } from './components/AddressStep';
 import { CompsStep } from './components/CompsStep';
 import { ScenariosStep } from './components/ScenariosStep';
@@ -76,7 +77,12 @@ export const PropertyAnalyzerPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [interestRate, setInterestRate] = useState(FALLBACK_RATE);
   const [callsRemaining, setCallsRemaining] = useState<number | null>(null);
-  const [history, setHistory] = useLocalStorage<HistoryItem[]>('property-analyzer-history', [], TTL.ONE_MONTH);
+  const historyCache = useRef<LRUCache<string, HistoryItem>>(null!);
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>(() => {
+    const cache = loadHistoryCache();
+    historyCache.current = cache;
+    return cache.toArray();
+  });
   const [cachedRates, setCachedRates] = useLocalStorage(
     'fred-rate-cache',
     {} as Record<string, FredApiResponse>,
@@ -131,7 +137,9 @@ export const PropertyAnalyzerPage: React.FC = () => {
         )
       );
       const historyItem: HistoryItem = { id: crypto.randomUUID(), address, analysis, searchedAt: new Date().toISOString() };
-      setHistory((prev) => [historyItem, ...prev.filter((h) => h.address.displayName !== address.displayName)].slice(0, 10));
+      historyCache.current.put(address.displayName, historyItem);
+      saveHistoryCache(historyCache.current);
+      setHistoryItems(historyCache.current.toArray());
       setState({ step: 'comps', address, analysis, scenarios });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
@@ -163,6 +171,9 @@ export const PropertyAnalyzerPage: React.FC = () => {
   };
 
   const handleLoadHistory = (item: HistoryItem) => {
+    historyCache.current.get(item.address.displayName);
+    saveHistoryCache(historyCache.current);
+    setHistoryItems(historyCache.current.toArray());
     const scenarios = TIERS.map((tier) =>
       buildScenario(crypto.randomUUID(), TIER_NAMES[tier], tier, makeDefaultParams(item.analysis, tier, interestRate))
     );
@@ -223,7 +234,7 @@ export const PropertyAnalyzerPage: React.FC = () => {
             onSubmit={handleAnalyze}
             loading={loading}
             error={error}
-            history={history}
+            history={historyItems}
             onLoadHistory={handleLoadHistory}
             callsRemaining={callsRemaining}
           />
