@@ -151,6 +151,13 @@ resource "aws_lambda_function" "hud_proxy" {
 resource "aws_apigatewayv2_api" "api" {
   name          = "rb-dev-api"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = ["https://reecebernard.dev"]
+    allow_methods = ["GET", "POST", "OPTIONS"]
+    allow_headers = ["Content-Type"]
+    max_age       = 300
+  }
 }
 
 resource "aws_apigatewayv2_stage" "default" {

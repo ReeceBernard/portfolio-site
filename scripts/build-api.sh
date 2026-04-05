@@ -19,10 +19,12 @@ for func in "${FUNCTIONS[@]}"; do
     --outfile="api-dist/$func/index.js" \
     --external:duckdb
 
-  # duckdb has native binaries — copy the full module for functions that use it
+  # duckdb has native binaries — install fresh so all deps (@mapbox/node-pre-gyp etc.)
+  # are included and built for the current platform (Linux x64 in CI = Lambda-compatible)
   if [[ "$func" == "analyze-property" || "$func" == "comps" ]]; then
-    mkdir -p "api-dist/$func/node_modules"
-    cp -r "node_modules/duckdb" "api-dist/$func/node_modules/"
+    DUCKDB_VERSION=$(node -p "require('./package.json').dependencies.duckdb")
+    echo "    Installing duckdb@${DUCKDB_VERSION}..."
+    (cd "api-dist/$func" && npm install "duckdb@${DUCKDB_VERSION}" --no-save --no-package-lock --no-fund --no-audit --silent)
   fi
 
   cd "api-dist/$func"
