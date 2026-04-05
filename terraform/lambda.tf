@@ -1,5 +1,26 @@
 # ── IAM ──────────────────────────────────────────────────────────────────────
 
+# Allow the github-actions-portfolio IAM user to deploy Lambda code
+data "aws_iam_user" "github_actions" {
+  user_name = "github-actions-portfolio"
+}
+
+resource "aws_iam_user_policy" "github_actions_lambda_deploy" {
+  name = "lambda-deploy"
+  user = data.aws_iam_user.github_actions.user_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["lambda:UpdateFunctionCode", "lambda:GetFunction"]
+      Resource = "arn:aws:lambda:us-east-1:*:function:rb-dev-*"
+    }]
+  })
+}
+
+
+
 resource "aws_iam_role" "api_lambda" {
   name = "rb-dev-api-lambda"
 
