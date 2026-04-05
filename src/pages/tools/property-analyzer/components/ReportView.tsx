@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { Scenario, ResolvedAddress, RentalComp, SalesComp } from '../types';
 import { MetricsGrid } from './MetricsGrid';
 import { ThirtyYearTable } from './ThirtyYearTable';
@@ -15,107 +15,122 @@ function googleMapsUrl(address: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+const TILE_SIZE = 256;
+function lonToPixelX(lon: number, zoom: number) {
+  return ((lon + 180) / 360) * Math.pow(2, zoom) * TILE_SIZE;
+}
+function latToPixelY(lat: number, zoom: number) {
+  const r = (lat * Math.PI) / 180;
+  return ((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2) * Math.pow(2, zoom) * TILE_SIZE;
+}
+
 function CompsSvgMap({ subject, comps, salesComps }: { subject: ResolvedAddress; comps: RentalComp[]; salesComps: SalesComp[] }) {
   const W = 1104;
   const H = 300;
-  const PAD = 36;
+  const PAD = 12;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const allPts = [
-    { lat: subject.lat, lon: subject.lon },
-    ...comps.map((c) => ({ lat: c.lat, lon: c.lon })),
-    ...salesComps.map((c) => ({ lat: c.lat, lon: c.lon })),
-  ];
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-  const lats = allPts.map((p) => p.lat);
-  const lons = allPts.map((p) => p.lon);
+    const validSales = salesComps.filter((c) => c.lat != null && c.lon != null);
 
-  let minLat = Math.min(...lats);
-  let maxLat = Math.max(...lats);
-  let minLon = Math.min(...lons);
-  let maxLon = Math.max(...lons);
+    // Pick zoom so all points fit with padding
+    const allLons = [subject.lon, ...validSales.map((c) => c.lon as number)];
+    const lonSpan = Math.max(...allLons) - Math.min(...allLons);
+    let zoom = 14;
+    for (let z = 16; z >= 11; z--) {
+      if (lonSpan * (Math.pow(2, z) * TILE_SIZE / 360) < W * 0.7) { zoom = z; break; }
+    }
 
-  const latSpan = Math.max(maxLat - minLat, 0.004);
-  const lonSpan = Math.max(maxLon - minLon, 0.006);
-  minLat -= latSpan * 0.3;
-  maxLat += latSpan * 0.3;
-  minLon -= lonSpan * 0.3;
-  maxLon += lonSpan * 0.3;
+    const centerPx = lonToPixelX(subject.lon, zoom);
+    const centerPy = latToPixelY(subject.lat, zoom);
+    const originPx = centerPx - W / 2;
+    const originPy = centerPy - H / 2;
+    const toX = (lon: number) => lonToPixelX(lon, zoom) - originPx;
+    const toY = (lat: number) => latToPixelY(lat, zoom) - originPy;
 
-  const toX = (lon: number) => PAD + ((lon - minLon) / (maxLon - minLon)) * (W - 2 * PAD);
-  const toY = (lat: number) => PAD + (1 - (lat - minLat) / (maxLat - minLat)) * (H - 2 * PAD);
+    const tileCount = 1 << zoom;
+    const startTX = Math.floor(originPx / TILE_SIZE);
+    const endTX = Math.ceil((originPx + W) / TILE_SIZE);
+    const startTY = Math.floor(originPy / TILE_SIZE);
+    const endTY = Math.ceil((originPy + H) / TILE_SIZE);
 
-  const sx = toX(subject.lon);
-  const sy = toY(subject.lat);
+    // Gray fallback while tiles load
+    ctx.fillStyle = '#e8e0d5';
+    ctx.fillRect(0, 0, W, H);
+
+    const tilePromises: Promise<void>[] = [];
+    for (let tx = startTX; tx < endTX; tx++) {
+      for (let ty = startTY; ty < endTY; ty++) {
+        if (ty < 0 || ty >= tileCount) continue;
+        const wtx = ((tx % tileCount) + tileCount) % tileCount;
+        const dx = tx * TILE_SIZE - originPx;
+        const dy = ty * TILE_SIZE - originPy;
+        tilePromises.push(new Promise<void>((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => { ctx.drawImage(img, dx, dy); resolve(); };
+          img.onerror = () => resolve();
+          img.src = `https://tile.openstreetmap.org/${zoom}/${wtx}/${ty}.png`;
+        }));
+      }
+    }
+
+    Promise.all(tilePromises).then(() => {
+      const drawMarker = (cx: number, cy: number, fill: string, label: string, r = 11) => {
+        ctx.shadowColor = 'rgba(0,0,0,0.35)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 2;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+        ctx.fillStyle = fill; ctx.fill();
+        ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+        ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = 'white'; ctx.font = 'bold 10px system-ui,sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(label, cx, cy);
+      };
+
+      validSales.forEach((comp, i) => drawMarker(toX(comp.lon as number), toY(comp.lat as number), '#a78bfa', String(i + 1)));
+      drawMarker(toX(subject.lon), toY(subject.lat), '#16a34a', 'S', 13);
+
+      // Attribution + legend
+      const legendW = 190, legendH = 20;
+      ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.fillRect(PAD, H - legendH - 4, legendW, legendH);
+      ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 0.5;
+      ctx.strokeRect(PAD, H - legendH - 4, legendW, legendH);
+      const dot = (x: number, color: string) => {
+        ctx.beginPath(); ctx.arc(x, H - 14, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = color; ctx.fill();
+        ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
+      };
+      dot(PAD + 8, '#16a34a');
+      ctx.fillStyle = '#374151'; ctx.font = '10px system-ui,sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText('Subject', PAD + 16, H - 14);
+      dot(PAD + 78, '#a78bfa');
+      ctx.fillText('Sales comps', PAD + 86, H - 14);
+
+      // OSM attribution (required)
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fillRect(W - 160, H - 16, 156, 14);
+      ctx.fillStyle = '#555'; ctx.font = '9px system-ui,sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText('© OpenStreetMap contributors', W - 4, H - 9);
+    });
+  }, [subject, comps, salesComps]);
 
   return (
-    <svg
+    <canvas
+      ref={canvasRef}
       width={W}
       height={H}
       style={{ border: '1px solid #e5e7eb', borderRadius: '6px', display: 'block' }}
-    >
-      <rect width={W} height={H} fill="#eef2f7" rx="6" />
-
-      {/* Crosshair lines at subject */}
-      <line x1={sx} y1={PAD} x2={sx} y2={H - PAD} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4 4" />
-      <line x1={PAD} y1={sy} x2={W - PAD} y2={sy} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4 4" />
-
-      {/* Lines from subject to each comp */}
-      {comps.map((comp, i) => (
-        <line
-          key={i}
-          x1={sx}
-          y1={sy}
-          x2={toX(comp.lon)}
-          y2={toY(comp.lat)}
-          stroke="#9ca3af"
-          strokeWidth="1"
-          strokeDasharray="3 3"
-        />
-      ))}
-
-      {/* Rental comp markers (blue) */}
-      {comps.map((comp, i) => {
-        const cx = toX(comp.lon);
-        const cy = toY(comp.lat);
-        return (
-          <g key={`r${i}`}>
-            <circle cx={cx} cy={cy} r={12} fill="#60a5fa" stroke="white" strokeWidth="2" />
-            <text x={cx} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="10" fontWeight="bold">
-              {i + 1}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Sales comp markers (purple) */}
-      {salesComps.map((comp, i) => {
-        const cx = toX(comp.lon);
-        const cy = toY(comp.lat);
-        return (
-          <g key={`s${i}`}>
-            <circle cx={cx} cy={cy} r={12} fill="#a78bfa" stroke="white" strokeWidth="2" />
-            <text x={cx} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="10" fontWeight="bold">
-              {i + 1}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Subject marker (drawn on top) */}
-      <circle cx={sx} cy={sy} r={13} fill="#16a34a" stroke="white" strokeWidth="2.5" />
-      <text x={sx} y={sy + 1} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="10" fontWeight="bold">
-        S
-      </text>
-
-      {/* Legend */}
-      <rect x={PAD} y={H - 22} width={220} height={18} fill="white" fillOpacity="0.8" rx="3" />
-      <circle cx={PAD + 10} cy={H - 13} r={6} fill="#16a34a" stroke="white" strokeWidth="1.5" />
-      <text x={PAD + 20} y={H - 9} fontSize="10" fill="#374151">Subject</text>
-      <circle cx={PAD + 78} cy={H - 13} r={6} fill="#60a5fa" stroke="white" strokeWidth="1.5" />
-      <text x={PAD + 88} y={H - 9} fontSize="10" fill="#374151">Rental</text>
-      <circle cx={PAD + 145} cy={H - 13} r={6} fill="#a78bfa" stroke="white" strokeWidth="1.5" />
-      <text x={PAD + 155} y={H - 9} fontSize="10" fill="#374151">Sales</text>
-    </svg>
+    />
   );
 }
 

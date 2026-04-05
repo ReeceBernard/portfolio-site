@@ -289,7 +289,7 @@ export const PropertyAnalyzerPage: React.FC = () => {
             onDeleteScenario={handleDeleteScenario}
             subjectAddress={state.address.displayName}
             subject={state.address}
-            comps={state.analysis.comps}
+            comps={state.analysis.comps ?? []}
             salesComps={state.analysis.salesComps ?? []}
           />
         )}

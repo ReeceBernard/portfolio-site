@@ -14,6 +14,51 @@ interface Props {
 
 const MANUAL_MAX_CHARS = 120;
 
+const LOADING_MESSAGES = [
+  'Pulling comps...',
+  'Fetching market data...',
+  'Running AI analysis...',
+  'Crunching the numbers...',
+  'Almost there...',
+];
+
+function useLoadingMessage(loading: boolean) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    if (!loading) { setIndex(0); return; }
+    const id = setInterval(() => setIndex(i => Math.min(i + 1, LOADING_MESSAGES.length - 1)), 3500);
+    return () => clearInterval(id);
+  }, [loading]);
+  return LOADING_MESSAGES[index];
+}
+
+const waveCSS = `
+@keyframes wave-letter {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.2); }
+}
+`;
+
+function WaveText({ text }: { text: string }) {
+  return (
+    <>
+      <style>{waveCSS}</style>
+      {text.split('').map((char, i) => (
+        <span
+          key={`${text}-${i}`}
+          style={{
+            display: 'inline-block',
+            animation: 'wave-letter 0.9s ease-in-out infinite',
+            animationDelay: `${i * 0.04}s`,
+          }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </>
+  );
+}
+
 // Starts with a house number, has some content, contains a 5-digit zip
 const isValidStreetAddress = (addr: string) => /^\d+,?\s+\S.+\b\d{5}\b/.test(addr);
 
@@ -24,6 +69,7 @@ const isValidManualAddress = (addr: string) =>
   isValidStreetAddress(addr);
 
 export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history, onLoadHistory, onDeleteHistory, callsRemaining }) => {
+  const loadingMessage = useLoadingMessage(loading);
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [selected, setSelected] = useState<ResolvedAddress | null>(null);
@@ -206,11 +252,11 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
         >
           {(loading || geocoding) ? (
             <>
-              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+              <svg className="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
-              {geocoding ? 'Looking up address...' : 'Analyzing with Claude...'}
+              <WaveText text={geocoding ? 'Looking up address...' : loadingMessage} />
             </>
           ) : 'Analyze Property'}
         </button>

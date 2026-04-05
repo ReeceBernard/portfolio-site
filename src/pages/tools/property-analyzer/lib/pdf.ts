@@ -8,6 +8,9 @@ export async function generatePDF(reportElement: HTMLElement, filename = 'proper
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
+  // Allow any async canvas rendering (tile maps) to finish
+  await new Promise((r) => setTimeout(r, 800));
+
   for (let i = 0; i < sections.length; i++) {
     if (i > 0) pdf.addPage();
 
