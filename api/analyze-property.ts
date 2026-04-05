@@ -190,6 +190,8 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
   if (method === "OPTIONS") return { statusCode: 200, headers: CORS, body: "" };
   if (method !== "POST") return err(405, { error: "Method not allowed" });
 
+  try {
+
   const { address, lat, lon } = JSON.parse(event.body ?? "{}") as {
     address?: string;
     lat?: number;
@@ -312,8 +314,7 @@ Requirements:
 - The three rent tiers must be tightly clustered: conservative and optimistic within 10-15% of median — not a wide spread
 - For saleDate, use the value from the deed records exactly`;
 
-  try {
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+  const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -344,6 +345,7 @@ Requirements:
       hudFmr: hudResult ? { ...hudResult.data, year: hudResult.year } : null,
       callsRemaining,
     }) };
+
   } catch (error) {
     console.error("analyze-property error:", error);
     const msg = error instanceof SyntaxError
