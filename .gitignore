@@ -30,6 +30,7 @@ terraform/.terraform/
 *.tfstate.backup
 .terraform.lock.hcl
 *.tfvars
+*.tfplan
 
 # Python
 __pycache__/
@@ -39,6 +40,8 @@ __pycache__/
 venv/
 *.egg-info/
 .pytest_cache/
+
+terraform/site.tfplan
 
 
 # Build outputs
