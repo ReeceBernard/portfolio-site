@@ -20,11 +20,17 @@ for func in "${FUNCTIONS[@]}"; do
     --external:duckdb
 
   # duckdb has native binaries — install fresh so all deps (@mapbox/node-pre-gyp etc.)
-  # are included and built for the current platform (Linux x64 in CI = Lambda-compatible)
+  # are included and built for the current platform (Linux x64 in CI = Lambda-compatible).
+  # A package.json anchor is required so npm installs into this directory's node_modules.
   if [[ "$func" == "analyze-property" || "$func" == "comps" ]]; then
     DUCKDB_VERSION=$(node -p "require('./package.json').dependencies.duckdb")
     echo "    Installing duckdb@${DUCKDB_VERSION}..."
-    (cd "api-dist/$func" && npm install "duckdb@${DUCKDB_VERSION}" --no-save --no-package-lock --no-fund --no-audit --silent)
+    (
+      cd "api-dist/$func"
+      echo '{"name":"lambda","version":"1.0.0"}' > package.json
+      npm install "duckdb@${DUCKDB_VERSION}" --no-fund --no-audit --silent
+      rm -f package.json package-lock.json
+    )
   fi
 
   cd "api-dist/$func"
