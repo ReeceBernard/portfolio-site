@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import type { NominatimResult, ResolvedAddress, HistoryItem } from '../types';
-import { searchAddress } from '../lib/geocode';
+import React, { useEffect, useRef, useState } from "react";
+import { searchAddress } from "../lib/geocode";
+import type { HistoryItem, NominatimResult, ResolvedAddress } from "../types";
 
 interface Props {
   onSubmit: (address: ResolvedAddress) => void;
@@ -15,52 +15,64 @@ interface Props {
 const MANUAL_MAX_CHARS = 120;
 
 const LOADING_MESSAGES = [
-  'Pulling comps...',
-  'Fetching market data...',
-  'Running AI analysis...',
-  'Crunching the numbers...',
-  'Almost there...',
+  "Pulling comps...",
+  "Fetching market data...",
+  "Running AI analysis...",
+  "Crunching the numbers...",
+  "Almost there...",
 ];
 
 function useLoadingMessage(loading: boolean) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    if (!loading) { setIndex(0); return; }
-    const id = setInterval(() => setIndex(i => Math.min(i + 1, LOADING_MESSAGES.length - 1)), 3500);
+    if (!loading) {
+      setIndex(0);
+      return;
+    }
+    const id = setInterval(
+      () => setIndex((i) => Math.min(i + 1, LOADING_MESSAGES.length - 1)),
+      3500,
+    );
     return () => clearInterval(id);
   }, [loading]);
   return LOADING_MESSAGES[index];
 }
 
-const waveCSS = `
-@keyframes wave-letter {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-4px) scale(1.2); }
-}
-`;
-
 function WaveText({ text }: { text: string }) {
+  const N = text.length;
+  const stepMs = 250;
+  const totalS = (N * stepMs) / 1000;
+  // Each letter gets 1/N of the total duration. It bounces up at 40% of its slot
+  // and returns to 0 by the end — so the next letter starts only after this one lands.
+  const slotPct = 100 / N;
+  const css = `@keyframes bounce-seq {
+    0% { transform: translateY(0); }
+    ${(slotPct * 0.4).toFixed(2)}% { transform: translateY(-5px); }
+    ${slotPct.toFixed(2)}%, 100% { transform: translateY(0); }
+  }`;
+
   return (
-    <>
-      <style>{waveCSS}</style>
-      {text.split('').map((char, i) => (
+    <div className="gap-0">
+      <style>{css}</style>
+      {text.split("").map((char, i) => (
         <span
           key={`${text}-${i}`}
           style={{
-            display: 'inline-block',
-            animation: 'wave-letter 0.9s ease-in-out infinite',
-            animationDelay: `${i * 0.04}s`,
+            display: "inline-block",
+            animation: `bounce-seq ${totalS}s ease-in-out infinite`,
+            animationDelay: `${(i * stepMs) / 1000}s`,
           }}
         >
-          {char === ' ' ? '\u00A0' : char}
+          {char === " " ? "\u00A0" : char}
         </span>
       ))}
-    </>
+    </div>
   );
 }
 
 // Starts with a house number, has some content, contains a 5-digit zip
-const isValidStreetAddress = (addr: string) => /^\d+,?\s+\S.+\b\d{5}\b/.test(addr);
+const isValidStreetAddress = (addr: string) =>
+  /^\d+,?\s+\S.+\b\d{5}\b/.test(addr);
 
 // Extra checks for the free-text manual field: not too long, not too many words
 const isValidManualAddress = (addr: string) =>
@@ -68,15 +80,23 @@ const isValidManualAddress = (addr: string) =>
   addr.trim().split(/\s+/).length <= 12 &&
   isValidStreetAddress(addr);
 
-export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history, onLoadHistory, onDeleteHistory, callsRemaining }) => {
+export const AddressStep: React.FC<Props> = ({
+  onSubmit,
+  loading,
+  error,
+  history,
+  onLoadHistory,
+  onDeleteHistory,
+  callsRemaining,
+}) => {
   const loadingMessage = useLoadingMessage(loading);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [selected, setSelected] = useState<ResolvedAddress | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
   const [manualMode, setManualMode] = useState(false);
-  const [manualQuery, setManualQuery] = useState('');
+  const [manualQuery, setManualQuery] = useState("");
   const [geocoding, setGeocoding] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -97,16 +117,23 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const handleSelect = (result: NominatimResult) => {
-    setSelected({ displayName: result.display_name, lat: parseFloat(result.lat), lon: parseFloat(result.lon) });
+    setSelected({
+      displayName: result.display_name,
+      lat: parseFloat(result.lat),
+      lon: parseFloat(result.lon),
+    });
     setQuery(result.display_name);
     setShowSuggestions(false);
     setSuggestions([]);
@@ -115,7 +142,7 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
   const handleClear = () => {
     setSelected(null);
-    setQuery('');
+    setQuery("");
     setAddressError(null);
   };
 
@@ -124,7 +151,9 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
     if (manualMode) {
       if (!isValidManualAddress(manualQuery)) {
-        setAddressError('Please enter a valid street address including zip code (e.g. 123 Main St, Austin, TX 78701).');
+        setAddressError(
+          "Please enter a valid street address including zip code (e.g. 123 Main St, Austin, TX 78701).",
+        );
         return;
       }
       setAddressError(null);
@@ -133,10 +162,16 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
         const results = await searchAddress(manualQuery);
         const first = results[0];
         if (!first) {
-          setAddressError("Couldn't find that address. Double-check the street number, city, and zip.");
+          setAddressError(
+            "Couldn't find that address. Double-check the street number, city, and zip.",
+          );
           return;
         }
-        onSubmit({ displayName: manualQuery, lat: parseFloat(first.lat), lon: parseFloat(first.lon) });
+        onSubmit({
+          displayName: manualQuery,
+          lat: parseFloat(first.lat),
+          lon: parseFloat(first.lon),
+        });
       } finally {
         setGeocoding(false);
       }
@@ -145,7 +180,9 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
     if (!selected) return;
     if (!isValidStreetAddress(selected.displayName)) {
-      setAddressError('Please select a specific street address including zip code (e.g. 123 Main St, Austin, TX 78701).');
+      setAddressError(
+        "Please select a specific street address including zip code (e.g. 123 Main St, Austin, TX 78701).",
+      );
       return;
     }
     setAddressError(null);
@@ -155,7 +192,7 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
   const enterManualMode = () => {
     setManualMode(true);
     setSelected(null);
-    setQuery('');
+    setQuery("");
     setSuggestions([]);
     setShowSuggestions(false);
     setAddressError(null);
@@ -163,31 +200,48 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
   const exitManualMode = () => {
     setManualMode(false);
-    setManualQuery('');
+    setManualQuery("");
     setAddressError(null);
   };
 
-  const isSubmitDisabled = loading || geocoding || callsRemaining === 0 ||
+  const isSubmitDisabled =
+    loading ||
+    geocoding ||
+    callsRemaining === 0 ||
     (manualMode ? !manualQuery.trim() : !selected);
 
   return (
     <div className="max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Analyze a Property</h2>
-      <p className="text-gray-500 mb-6">Enter a US address to get AI-powered rental comps and investment projections.</p>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        Analyze a Property
+      </h2>
+      <p className="text-gray-500 mb-6">
+        Enter a US address to get AI-powered rental comps and investment
+        projections.
+      </p>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {manualMode ? (
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-sm font-medium text-gray-700">Property Address</label>
-              <button type="button" onClick={exitManualMode} className="text-xs text-blue-500 hover:text-blue-700 hover:underline bg-transparent border-0 p-0 cursor-pointer">
+              <label className="block text-sm font-medium text-gray-700">
+                Property Address
+              </label>
+              <button
+                type="button"
+                onClick={exitManualMode}
+                className="text-xs text-blue-500 hover:text-blue-700 hover:underline bg-transparent border-0 p-0 cursor-pointer"
+              >
                 ← Back to search
               </button>
             </div>
             <input
               type="text"
               value={manualQuery}
-              onChange={(e) => { setManualQuery(e.target.value); setAddressError(null); }}
+              onChange={(e) => {
+                setManualQuery(e.target.value);
+                setAddressError(null);
+              }}
               placeholder="123 Main St, Austin, TX 78701"
               maxLength={MANUAL_MAX_CHARS}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -195,32 +249,53 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
               autoFocus
             />
             <div className="flex justify-between mt-1">
-              {addressError
-                ? <p className="text-xs text-red-500">{addressError}</p>
-                : <span />}
-              <p className={`text-xs ${manualQuery.length >= MANUAL_MAX_CHARS ? 'text-red-500' : 'text-gray-400'}`}>
+              {addressError ? (
+                <p className="text-xs text-red-500">{addressError}</p>
+              ) : (
+                <span />
+              )}
+              <p
+                className={`text-xs ${manualQuery.length >= MANUAL_MAX_CHARS ? "text-red-500" : "text-gray-400"}`}
+              >
                 {manualQuery.length}/{MANUAL_MAX_CHARS}
               </p>
             </div>
           </div>
         ) : (
           <div className="relative" ref={dropdownRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Property Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Property Address
+            </label>
             <div className="relative">
               <input
                 type="text"
                 value={query}
-                onChange={(e) => { setQuery(e.target.value); if (selected) setSelected(null); }}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  if (selected) setSelected(null);
+                }}
                 placeholder="123 Main St, Austin, TX 78701"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 pr-8"
                 autoComplete="off"
               />
               {selected && (
-                <button type="button" onClick={handleClear} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">✕</button>
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
               )}
             </div>
-            {addressError && <p className="text-xs text-red-500 mt-1">{addressError}</p>}
-            <button type="button" onClick={enterManualMode} className="text-xs text-blue-500 hover:text-blue-700 hover:underline mt-1 transition-colors bg-transparent border-0 p-0 cursor-pointer">
+            {addressError && (
+              <p className="text-xs text-red-500 mt-1">{addressError}</p>
+            )}
+            <button
+              type="button"
+              onClick={enterManualMode}
+              className="text-xs text-blue-500 hover:text-blue-700 hover:underline mt-1 transition-colors bg-transparent border-0 p-0 cursor-pointer"
+            >
               Can't find your property? Enter address manually
             </button>
             {showSuggestions && suggestions.length > 0 && (
@@ -250,25 +325,48 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
           disabled={isSubmitDisabled}
           className="w-full py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2"
         >
-          {(loading || geocoding) ? (
+          {loading || geocoding ? (
             <>
-              <svg className="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+              <svg
+                className="animate-spin h-4 w-4 shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                />
               </svg>
-              <WaveText text={geocoding ? 'Looking up address...' : loadingMessage} />
+              <WaveText
+                text={geocoding ? "Looking up address..." : loadingMessage}
+              />
             </>
-          ) : 'Analyze Property'}
+          ) : (
+            "Analyze Property"
+          )}
         </button>
 
         {callsRemaining !== null && (
-          <p className={`text-xs text-center ${
-            callsRemaining === 0 ? 'text-red-500 font-medium' :
-            callsRemaining <= 10 ? 'text-amber-500' :
-            'text-gray-400'
-          }`}>
+          <p
+            className={`text-xs text-center ${
+              callsRemaining === 0
+                ? "text-red-500 font-medium"
+                : callsRemaining <= 10
+                  ? "text-amber-500"
+                  : "text-gray-400"
+            }`}
+          >
             {callsRemaining === 0
-              ? 'Daily limit reached. Try again tomorrow.'
+              ? "Daily limit reached. Try again tomorrow."
               : `${callsRemaining} / 100 analyses remaining today`}
           </p>
         )}
@@ -276,7 +374,9 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
       {history.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Recent Searches</h3>
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            Recent Searches
+          </h3>
           <ul className="space-y-2">
             {history.slice(0, 5).map((item) => (
               <li key={item.id} className="group relative">
@@ -286,17 +386,33 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
                 >
                   <div className="flex-1 min-w-0 pr-10">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {item.address.displayName.split(',').slice(0, 2).join(',')}
+                      {item.address.displayName
+                        .split(",")
+                        .slice(0, 2)
+                        .join(",")}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      {new Date(item.searchedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      {' · '}Est. ${item.analysis.estimatedValue.toLocaleString()}
-                      {item.analysis.rentRanges?.median != null && <>{' · '}Median ${item.analysis.rentRanges.median.toLocaleString()}/mo</>}
+                      {new Date(item.searchedAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                      {" · "}Est. $
+                      {item.analysis.estimatedValue.toLocaleString()}
+                      {item.analysis.rentRanges?.median != null && (
+                        <>
+                          {" · "}Median $
+                          {item.analysis.rentRanges.median.toLocaleString()}/mo
+                        </>
+                      )}
                     </p>
                   </div>
                 </button>
                 <button
-                  onClick={(e) => { e.stopPropagation(); onDeleteHistory(item); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteHistory(item);
+                  }}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                   title="Remove from history"
                 >
@@ -308,7 +424,9 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
         </div>
       )}
       <p className="mt-8 text-xs text-gray-400 text-center">
-        For entertainment purposes only. Not financial or investment advice. Always do your own research and consult a qualified professional before making any investment decisions.
+        For entertainment purposes only. Not financial or investment advice.
+        Always do your own research and consult a qualified professional before
+        making any investment decisions.
       </p>
     </div>
   );
