@@ -206,7 +206,7 @@ export const ReportView = React.forwardRef<HTMLDivElement, Props>(
                         {comp.address}
                       </a>
                     </td>
-                    <td style={{ padding: '8px', color: '#374151' }}>{comp.bedrooms}bd / {comp.bathrooms}ba</td>
+                    <td style={{ padding: '8px', color: '#374151' }}>{comp.bedrooms != null ? `${comp.bedrooms}bd` : '—'} / {comp.bathrooms != null ? `${comp.bathrooms}ba` : '—'}</td>
                     <td style={{ padding: '8px', color: '#374151' }}>{comp.squareFeet ? comp.squareFeet.toLocaleString() : '—'}</td>
                     <td style={{ padding: '8px', color: comp.saleDate ? '#374151' : '#9ca3af' }}>{comp.saleDate ?? '—'}</td>
                     <td style={{ padding: '8px', textAlign: 'right', color: '#7c3aed', fontWeight: 700 }}>${comp.salePrice.toLocaleString()}</td>

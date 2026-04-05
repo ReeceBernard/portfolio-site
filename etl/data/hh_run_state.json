@@ -1,0 +1,963 @@
+{
+  "started_at": "2026-04-05T16:34:04.431473+00:00",
+  "last_updated": "2026-04-05T17:00:23.356632+00:00",
+  "date_from": "2024-10-12",
+  "date_to": "2026-04-05",
+  "completed": [
+    {
+      "county": "atkinson",
+      "timestamp": "2026-04-05T16:34:15.487243+00:00",
+      "record_count": 65,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/atkinson/2026-04-05.json"
+    },
+    {
+      "county": "appling",
+      "timestamp": "2026-04-05T16:34:15.721982+00:00",
+      "record_count": 312,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/appling/2026-04-05.json"
+    },
+    {
+      "county": "bacon",
+      "timestamp": "2026-04-05T16:34:24.643158+00:00",
+      "record_count": 173,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bacon/2026-04-05.json"
+    },
+    {
+      "county": "baker",
+      "timestamp": "2026-04-05T16:34:26.555848+00:00",
+      "record_count": 25,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/baker/2026-04-05.json"
+    },
+    {
+      "county": "banks",
+      "timestamp": "2026-04-05T16:34:38.637093+00:00",
+      "record_count": 496,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/banks/2026-04-05.json"
+    },
+    {
+      "county": "baldwin",
+      "timestamp": "2026-04-05T16:34:38.665682+00:00",
+      "record_count": 894,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/baldwin/2026-04-05.json"
+    },
+    {
+      "county": "barrow",
+      "timestamp": "2026-04-05T16:35:08.728162+00:00",
+      "record_count": 3284,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/barrow/2026-04-05.json"
+    },
+    {
+      "county": "bartow",
+      "timestamp": "2026-04-05T16:35:10.927327+00:00",
+      "record_count": 3364,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bartow/2026-04-05.json"
+    },
+    {
+      "county": "ben hill",
+      "timestamp": "2026-04-05T16:35:20.700935+00:00",
+      "record_count": 244,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/ben hill/2026-04-05.json"
+    },
+    {
+      "county": "berrien",
+      "timestamp": "2026-04-05T16:35:24.014628+00:00",
+      "record_count": 350,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/berrien/2026-04-05.json"
+    },
+    {
+      "county": "bleckley",
+      "timestamp": "2026-04-05T16:35:37.151328+00:00",
+      "record_count": 207,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bleckley/2026-04-05.json"
+    },
+    {
+      "county": "bibb",
+      "timestamp": "2026-04-05T16:35:50.437118+00:00",
+      "record_count": 3723,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bibb/2026-04-05.json"
+    },
+    {
+      "county": "brantley",
+      "timestamp": "2026-04-05T16:35:51.411017+00:00",
+      "record_count": 412,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/brantley/2026-04-05.json"
+    },
+    {
+      "county": "brooks",
+      "timestamp": "2026-04-05T16:36:02.241797+00:00",
+      "record_count": 239,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/brooks/2026-04-05.json"
+    },
+    {
+      "county": "bryan",
+      "timestamp": "2026-04-05T16:36:14.783922+00:00",
+      "record_count": 1593,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bryan/2026-04-05.json"
+    },
+    {
+      "county": "bulloch",
+      "timestamp": "2026-04-05T16:36:22.871394+00:00",
+      "record_count": 1969,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/bulloch/2026-04-05.json"
+    },
+    {
+      "county": "burke",
+      "timestamp": "2026-04-05T16:36:27.641892+00:00",
+      "record_count": 353,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/burke/2026-04-05.json"
+    },
+    {
+      "county": "butts",
+      "timestamp": "2026-04-05T16:36:37.002506+00:00",
+      "record_count": 687,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/butts/2026-04-05.json"
+    },
+    {
+      "county": "calhoun",
+      "timestamp": "2026-04-05T16:36:38.398250+00:00",
+      "record_count": 40,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/calhoun/2026-04-05.json"
+    },
+    {
+      "county": "candler",
+      "timestamp": "2026-04-05T16:36:48.792596+00:00",
+      "record_count": 225,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/candler/2026-04-05.json"
+    },
+    {
+      "county": "camden",
+      "timestamp": "2026-04-05T16:37:07.816228+00:00",
+      "record_count": 2236,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/camden/2026-04-05.json"
+    },
+    {
+      "county": "carroll",
+      "timestamp": "2026-04-05T16:37:23.172516+00:00",
+      "record_count": 3239,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/carroll/2026-04-05.json"
+    },
+    {
+      "county": "charlton",
+      "timestamp": "2026-04-05T16:37:33.550625+00:00",
+      "record_count": 226,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/charlton/2026-04-05.json"
+    },
+    {
+      "county": "catoosa",
+      "timestamp": "2026-04-05T16:37:38.179601+00:00",
+      "record_count": 1585,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/catoosa/2026-04-05.json"
+    },
+    {
+      "county": "chattahoochee",
+      "timestamp": "2026-04-05T16:37:49.948387+00:00",
+      "record_count": 55,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/chattahoochee/2026-04-05.json"
+    },
+    {
+      "county": "chattooga",
+      "timestamp": "2026-04-05T16:38:08.573945+00:00",
+      "record_count": 455,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/chattooga/2026-04-05.json"
+    },
+    {
+      "county": "chatham",
+      "timestamp": "2026-04-05T16:38:20.063094+00:00",
+      "record_count": 7752,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/chatham/2026-04-05.json"
+    },
+    {
+      "county": "clarke",
+      "timestamp": "2026-04-05T16:38:55.851716+00:00",
+      "record_count": 2261,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/clarke/2026-04-05.json"
+    },
+    {
+      "county": "cherokee",
+      "timestamp": "2026-04-05T16:39:00.881172+00:00",
+      "record_count": 7742,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/cherokee/2026-04-05.json"
+    },
+    {
+      "county": "clay",
+      "timestamp": "2026-04-05T16:39:04.219090+00:00",
+      "record_count": 57,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/clay/2026-04-05.json"
+    },
+    {
+      "county": "clinch",
+      "timestamp": "2026-04-05T16:39:13.208998+00:00",
+      "record_count": 71,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/clinch/2026-04-05.json"
+    },
+    {
+      "county": "clayton",
+      "timestamp": "2026-04-05T16:39:47.802038+00:00",
+      "record_count": 4551,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/clayton/2026-04-05.json"
+    },
+    {
+      "county": "coffee",
+      "timestamp": "2026-04-05T16:40:07.095137+00:00",
+      "record_count": 563,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/coffee/2026-04-05.json"
+    },
+    {
+      "county": "colquitt",
+      "timestamp": "2026-04-05T16:40:26.501938+00:00",
+      "record_count": 700,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/colquitt/2026-04-05.json"
+    },
+    {
+      "county": "cobb",
+      "timestamp": "2026-04-05T16:40:30.672144+00:00",
+      "record_count": 16000,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/cobb/2026-04-05.json"
+    },
+    {
+      "county": "cook",
+      "timestamp": "2026-04-05T16:40:43.679102+00:00",
+      "record_count": 320,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/cook/2026-04-05.json"
+    },
+    {
+      "county": "columbia",
+      "timestamp": "2026-04-05T16:40:58.330665+00:00",
+      "record_count": 3896,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/columbia/2026-04-05.json"
+    },
+    {
+      "county": "crawford",
+      "timestamp": "2026-04-05T16:41:09.279559+00:00",
+      "record_count": 234,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/crawford/2026-04-05.json"
+    },
+    {
+      "county": "coweta",
+      "timestamp": "2026-04-05T16:41:16.571399+00:00",
+      "record_count": 4256,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/coweta/2026-04-05.json"
+    },
+    {
+      "county": "crisp",
+      "timestamp": "2026-04-05T16:41:21.880374+00:00",
+      "record_count": 252,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/crisp/2026-04-05.json"
+    },
+    {
+      "county": "dade",
+      "timestamp": "2026-04-05T16:41:27.639826+00:00",
+      "record_count": 436,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dade/2026-04-05.json"
+    },
+    {
+      "county": "decatur",
+      "timestamp": "2026-04-05T16:41:42.366660+00:00",
+      "record_count": 487,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/decatur/2026-04-05.json"
+    },
+    {
+      "county": "dawson",
+      "timestamp": "2026-04-05T16:41:45.747729+00:00",
+      "record_count": 1694,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dawson/2026-04-05.json"
+    },
+    {
+      "county": "dodge",
+      "timestamp": "2026-04-05T16:42:01.158608+00:00",
+      "record_count": 256,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dodge/2026-04-05.json"
+    },
+    {
+      "county": "dooly",
+      "timestamp": "2026-04-05T16:42:15.375978+00:00",
+      "record_count": 109,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dooly/2026-04-05.json"
+    },
+    {
+      "county": "dougherty",
+      "timestamp": "2026-04-05T16:42:40.082582+00:00",
+      "record_count": 995,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dougherty/2026-04-05.json"
+    },
+    {
+      "county": "dekalb",
+      "timestamp": "2026-04-05T16:42:43.287457+00:00",
+      "record_count": 14295,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/dekalb/2026-04-05.json"
+    },
+    {
+      "county": "early",
+      "timestamp": "2026-04-05T16:42:54.782837+00:00",
+      "record_count": 101,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/early/2026-04-05.json"
+    },
+    {
+      "county": "echols",
+      "timestamp": "2026-04-05T16:43:05.711193+00:00",
+      "record_count": 30,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/echols/2026-04-05.json"
+    },
+    {
+      "county": "douglas",
+      "timestamp": "2026-04-05T16:43:10.167284+00:00",
+      "record_count": 3255,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/douglas/2026-04-05.json"
+    },
+    {
+      "county": "elbert",
+      "timestamp": "2026-04-05T16:43:23.555926+00:00",
+      "record_count": 546,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/elbert/2026-04-05.json"
+    },
+    {
+      "county": "effingham",
+      "timestamp": "2026-04-05T16:43:31.694744+00:00",
+      "record_count": 2026,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/effingham/2026-04-05.json"
+    },
+    {
+      "county": "emanuel",
+      "timestamp": "2026-04-05T16:43:33.143072+00:00",
+      "record_count": 310,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/emanuel/2026-04-05.json"
+    },
+    {
+      "county": "evans",
+      "timestamp": "2026-04-05T16:43:44.062098+00:00",
+      "record_count": 178,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/evans/2026-04-05.json"
+    },
+    {
+      "county": "fannin",
+      "timestamp": "2026-04-05T16:43:58.595150+00:00",
+      "record_count": 1872,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/fannin/2026-04-05.json"
+    },
+    {
+      "county": "fayette",
+      "timestamp": "2026-04-05T16:44:14.334111+00:00",
+      "record_count": 2502,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/fayette/2026-04-05.json"
+    },
+    {
+      "county": "floyd",
+      "timestamp": "2026-04-05T16:44:26.792044+00:00",
+      "record_count": 2366,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/floyd/2026-04-05.json"
+    },
+    {
+      "county": "franklin",
+      "timestamp": "2026-04-05T16:44:46.372195+00:00",
+      "record_count": 674,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/franklin/2026-04-05.json"
+    },
+    {
+      "county": "forsyth",
+      "timestamp": "2026-04-05T16:44:56.269290+00:00",
+      "record_count": 6639,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/forsyth/2026-04-05.json"
+    },
+    {
+      "county": "gilmer",
+      "timestamp": "2026-04-05T16:45:43.087467+00:00",
+      "record_count": 2204,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/gilmer/2026-04-05.json"
+    },
+    {
+      "county": "glascock",
+      "timestamp": "2026-04-05T16:45:56.368838+00:00",
+      "record_count": 66,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/glascock/2026-04-05.json"
+    },
+    {
+      "county": "fulton",
+      "timestamp": "2026-04-05T16:46:27.852004+00:00",
+      "record_count": 24046,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/fulton/2026-04-05.json"
+    },
+    {
+      "county": "glynn",
+      "timestamp": "2026-04-05T16:46:39.873311+00:00",
+      "record_count": 3098,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/glynn/2026-04-05.json"
+    },
+    {
+      "county": "grady",
+      "timestamp": "2026-04-05T16:46:50.773668+00:00",
+      "record_count": 423,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/grady/2026-04-05.json"
+    },
+    {
+      "county": "gordon",
+      "timestamp": "2026-04-05T16:46:51.762663+00:00",
+      "record_count": 1412,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/gordon/2026-04-05.json"
+    },
+    {
+      "county": "greene",
+      "timestamp": "2026-04-05T16:47:19.498936+00:00",
+      "record_count": 1248,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/greene/2026-04-05.json"
+    },
+    {
+      "county": "habersham",
+      "timestamp": "2026-04-05T16:47:50.644165+00:00",
+      "record_count": 1295,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/habersham/2026-04-05.json"
+    },
+    {
+      "county": "gwinnett",
+      "timestamp": "2026-04-05T16:48:18.219591+00:00",
+      "record_count": 19232,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/gwinnett/2026-04-05.json"
+    },
+    {
+      "county": "hancock",
+      "timestamp": "2026-04-05T16:48:31.111800+00:00",
+      "record_count": 244,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/hancock/2026-04-05.json"
+    },
+    {
+      "county": "hall",
+      "timestamp": "2026-04-05T16:48:35.898147+00:00",
+      "record_count": 5665,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/hall/2026-04-05.json"
+    },
+    {
+      "county": "haralson",
+      "timestamp": "2026-04-05T16:48:47.709389+00:00",
+      "record_count": 832,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/haralson/2026-04-05.json"
+    },
+    {
+      "county": "harris",
+      "timestamp": "2026-04-05T16:48:53.781094+00:00",
+      "record_count": 998,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/harris/2026-04-05.json"
+    },
+    {
+      "county": "heard",
+      "timestamp": "2026-04-05T16:49:03.551729+00:00",
+      "record_count": 297,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/heard/2026-04-05.json"
+    },
+    {
+      "county": "hart",
+      "timestamp": "2026-04-05T16:49:06.715918+00:00",
+      "record_count": 906,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/hart/2026-04-05.json"
+    },
+    {
+      "county": "houston",
+      "timestamp": "2026-04-05T16:49:50.654581+00:00",
+      "record_count": 4697,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/houston/2026-04-05.json"
+    },
+    {
+      "county": "henry",
+      "timestamp": "2026-04-05T16:49:51.229649+00:00",
+      "record_count": 6371,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/henry/2026-04-05.json"
+    },
+    {
+      "county": "irwin",
+      "timestamp": "2026-04-05T16:50:04.186045+00:00",
+      "record_count": 113,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/irwin/2026-04-05.json"
+    },
+    {
+      "county": "jasper",
+      "timestamp": "2026-04-05T16:50:20.121322+00:00",
+      "record_count": 578,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jasper/2026-04-05.json"
+    },
+    {
+      "county": "jackson",
+      "timestamp": "2026-04-05T16:50:21.432875+00:00",
+      "record_count": 3783,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jackson/2026-04-05.json"
+    },
+    {
+      "county": "jefferson",
+      "timestamp": "2026-04-05T16:50:31.560551+00:00",
+      "record_count": 194,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jefferson/2026-04-05.json"
+    },
+    {
+      "county": "jeff davis",
+      "timestamp": "2026-04-05T16:50:32.287862+00:00",
+      "record_count": 223,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jeff davis/2026-04-05.json"
+    },
+    {
+      "county": "jenkins",
+      "timestamp": "2026-04-05T16:50:42.718374+00:00",
+      "record_count": 133,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jenkins/2026-04-05.json"
+    },
+    {
+      "county": "johnson",
+      "timestamp": "2026-04-05T16:50:43.172882+00:00",
+      "record_count": 138,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/johnson/2026-04-05.json"
+    },
+    {
+      "county": "jones",
+      "timestamp": "2026-04-05T16:50:57.732515+00:00",
+      "record_count": 601,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/jones/2026-04-05.json"
+    },
+    {
+      "county": "lamar",
+      "timestamp": "2026-04-05T16:50:59.037687+00:00",
+      "record_count": 527,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lamar/2026-04-05.json"
+    },
+    {
+      "county": "lanier",
+      "timestamp": "2026-04-05T16:51:08.974532+00:00",
+      "record_count": 250,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lanier/2026-04-05.json"
+    },
+    {
+      "county": "laurens",
+      "timestamp": "2026-04-05T16:51:17.881881+00:00",
+      "record_count": 1152,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/laurens/2026-04-05.json"
+    },
+    {
+      "county": "lee",
+      "timestamp": "2026-04-05T16:51:22.827630+00:00",
+      "record_count": 510,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lee/2026-04-05.json"
+    },
+    {
+      "county": "lincoln",
+      "timestamp": "2026-04-05T16:51:33.252501+00:00",
+      "record_count": 243,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lincoln/2026-04-05.json"
+    },
+    {
+      "county": "liberty",
+      "timestamp": "2026-04-05T16:51:43.425634+00:00",
+      "record_count": 2188,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/liberty/2026-04-05.json"
+    },
+    {
+      "county": "long",
+      "timestamp": "2026-04-05T16:51:48.566794+00:00",
+      "record_count": 791,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/long/2026-04-05.json"
+    },
+    {
+      "county": "lumpkin",
+      "timestamp": "2026-04-05T16:52:05.040372+00:00",
+      "record_count": 1005,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lumpkin/2026-04-05.json"
+    },
+    {
+      "county": "lowndes",
+      "timestamp": "2026-04-05T16:52:09.636294+00:00",
+      "record_count": 2981,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/lowndes/2026-04-05.json"
+    },
+    {
+      "county": "macon",
+      "timestamp": "2026-04-05T16:52:16.263653+00:00",
+      "record_count": 130,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/macon/2026-04-05.json"
+    },
+    {
+      "county": "madison",
+      "timestamp": "2026-04-05T16:52:21.646068+00:00",
+      "record_count": 719,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/madison/2026-04-05.json"
+    },
+    {
+      "county": "marion",
+      "timestamp": "2026-04-05T16:52:24.860120+00:00",
+      "record_count": 148,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/marion/2026-04-05.json"
+    },
+    {
+      "county": "mcduffie",
+      "timestamp": "2026-04-05T16:52:33.626010+00:00",
+      "record_count": 353,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/mcduffie/2026-04-05.json"
+    },
+    {
+      "county": "mcintosh",
+      "timestamp": "2026-04-05T16:52:41.342595+00:00",
+      "record_count": 732,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/mcintosh/2026-04-05.json"
+    },
+    {
+      "county": "meriwether",
+      "timestamp": "2026-04-05T16:52:49.483029+00:00",
+      "record_count": 599,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/meriwether/2026-04-05.json"
+    },
+    {
+      "county": "miller",
+      "timestamp": "2026-04-05T16:52:50.619959+00:00",
+      "record_count": 147,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/miller/2026-04-05.json"
+    },
+    {
+      "county": "mitchell",
+      "timestamp": "2026-04-05T16:53:04.090238+00:00",
+      "record_count": 256,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/mitchell/2026-04-05.json"
+    },
+    {
+      "county": "monroe",
+      "timestamp": "2026-04-05T16:53:05.769624+00:00",
+      "record_count": 897,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/monroe/2026-04-05.json"
+    },
+    {
+      "county": "montgomery",
+      "timestamp": "2026-04-05T16:53:14.757026+00:00",
+      "record_count": 130,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/montgomery/2026-04-05.json"
+    },
+    {
+      "county": "morgan",
+      "timestamp": "2026-04-05T16:53:18.981903+00:00",
+      "record_count": 634,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/morgan/2026-04-05.json"
+    },
+    {
+      "county": "murray",
+      "timestamp": "2026-04-05T16:53:29.103317+00:00",
+      "record_count": 803,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/murray/2026-04-05.json"
+    },
+    {
+      "county": "muscogee",
+      "timestamp": "2026-04-05T16:53:50.344430+00:00",
+      "record_count": 3998,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/muscogee/2026-04-05.json"
+    },
+    {
+      "county": "newton",
+      "timestamp": "2026-04-05T16:53:55.894685+00:00",
+      "record_count": 3043,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/newton/2026-04-05.json"
+    },
+    {
+      "county": "oglethorpe",
+      "timestamp": "2026-04-05T16:54:06.057074+00:00",
+      "record_count": 389,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/oglethorpe/2026-04-05.json"
+    },
+    {
+      "county": "oconee",
+      "timestamp": "2026-04-05T16:54:08.030783+00:00",
+      "record_count": 1064,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/oconee/2026-04-05.json"
+    },
+    {
+      "county": "peach",
+      "timestamp": "2026-04-05T16:54:22.207689+00:00",
+      "record_count": 559,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/peach/2026-04-05.json"
+    },
+    {
+      "county": "paulding",
+      "timestamp": "2026-04-05T16:54:40.360764+00:00",
+      "record_count": 5406,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/paulding/2026-04-05.json"
+    },
+    {
+      "county": "pickens",
+      "timestamp": "2026-04-05T16:54:47.278760+00:00",
+      "record_count": 1481,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/pickens/2026-04-05.json"
+    },
+    {
+      "county": "pierce",
+      "timestamp": "2026-04-05T16:54:53.114787+00:00",
+      "record_count": 489,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/pierce/2026-04-05.json"
+    },
+    {
+      "county": "pike",
+      "timestamp": "2026-04-05T16:55:01.022709+00:00",
+      "record_count": 491,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/pike/2026-04-05.json"
+    },
+    {
+      "county": "polk",
+      "timestamp": "2026-04-05T16:55:09.434753+00:00",
+      "record_count": 986,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/polk/2026-04-05.json"
+    },
+    {
+      "county": "pulaski",
+      "timestamp": "2026-04-05T16:55:11.983028+00:00",
+      "record_count": 202,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/pulaski/2026-04-05.json"
+    },
+    {
+      "county": "quitman",
+      "timestamp": "2026-04-05T16:55:20.486831+00:00",
+      "record_count": 77,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/quitman/2026-04-05.json"
+    },
+    {
+      "county": "putnam",
+      "timestamp": "2026-04-05T16:55:26.439553+00:00",
+      "record_count": 1162,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/putnam/2026-04-05.json"
+    },
+    {
+      "county": "rabun",
+      "timestamp": "2026-04-05T16:55:34.622455+00:00",
+      "record_count": 737,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/rabun/2026-04-05.json"
+    },
+    {
+      "county": "randolph",
+      "timestamp": "2026-04-05T16:55:37.398620+00:00",
+      "record_count": 75,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/randolph/2026-04-05.json"
+    },
+    {
+      "county": "richmond",
+      "timestamp": "2026-04-05T16:56:02.444165+00:00",
+      "record_count": 3637,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/richmond/2026-04-05.json"
+    },
+    {
+      "county": "rockdale",
+      "timestamp": "2026-04-05T16:56:03.652789+00:00",
+      "record_count": 2441,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/rockdale/2026-04-05.json"
+    },
+    {
+      "county": "schley",
+      "timestamp": "2026-04-05T16:56:12.376410+00:00",
+      "record_count": 113,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/schley/2026-04-05.json"
+    },
+    {
+      "county": "screven",
+      "timestamp": "2026-04-05T16:56:16.129351+00:00",
+      "record_count": 240,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/screven/2026-04-05.json"
+    },
+    {
+      "county": "seminole",
+      "timestamp": "2026-04-05T16:56:25.476405+00:00",
+      "record_count": 209,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/seminole/2026-04-05.json"
+    },
+    {
+      "county": "spalding",
+      "timestamp": "2026-04-05T16:56:37.453965+00:00",
+      "record_count": 2057,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/spalding/2026-04-05.json"
+    },
+    {
+      "county": "stephens",
+      "timestamp": "2026-04-05T16:56:38.561951+00:00",
+      "record_count": 949,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/stephens/2026-04-05.json"
+    },
+    {
+      "county": "stewart",
+      "timestamp": "2026-04-05T16:56:48.563785+00:00",
+      "record_count": 43,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/stewart/2026-04-05.json"
+    },
+    {
+      "county": "sumter",
+      "timestamp": "2026-04-05T16:56:51.590671+00:00",
+      "record_count": 492,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/sumter/2026-04-05.json"
+    },
+    {
+      "county": "talbot",
+      "timestamp": "2026-04-05T16:57:00.395024+00:00",
+      "record_count": 108,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/talbot/2026-04-05.json"
+    },
+    {
+      "county": "taliaferro",
+      "timestamp": "2026-04-05T16:57:01.666464+00:00",
+      "record_count": 37,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/taliaferro/2026-04-05.json"
+    },
+    {
+      "county": "tattnall",
+      "timestamp": "2026-04-05T16:57:10.341181+00:00",
+      "record_count": 367,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/tattnall/2026-04-05.json"
+    },
+    {
+      "county": "taylor",
+      "timestamp": "2026-04-05T16:57:12.383169+00:00",
+      "record_count": 115,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/taylor/2026-04-05.json"
+    },
+    {
+      "county": "telfair",
+      "timestamp": "2026-04-05T16:57:19.758179+00:00",
+      "record_count": 150,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/telfair/2026-04-05.json"
+    },
+    {
+      "county": "terrell",
+      "timestamp": "2026-04-05T16:57:20.419889+00:00",
+      "record_count": 125,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/terrell/2026-04-05.json"
+    },
+    {
+      "county": "tift",
+      "timestamp": "2026-04-05T16:57:35.011656+00:00",
+      "record_count": 563,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/tift/2026-04-05.json"
+    },
+    {
+      "county": "thomas",
+      "timestamp": "2026-04-05T16:57:39.887382+00:00",
+      "record_count": 1153,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/thomas/2026-04-05.json"
+    },
+    {
+      "county": "toombs",
+      "timestamp": "2026-04-05T16:57:44.799815+00:00",
+      "record_count": 376,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/toombs/2026-04-05.json"
+    },
+    {
+      "county": "treutlen",
+      "timestamp": "2026-04-05T16:57:54.463380+00:00",
+      "record_count": 47,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/treutlen/2026-04-05.json"
+    },
+    {
+      "county": "towns",
+      "timestamp": "2026-04-05T16:57:57.470676+00:00",
+      "record_count": 683,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/towns/2026-04-05.json"
+    },
+    {
+      "county": "turner",
+      "timestamp": "2026-04-05T16:58:06.941754+00:00",
+      "record_count": 86,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/turner/2026-04-05.json"
+    },
+    {
+      "county": "troup",
+      "timestamp": "2026-04-05T16:58:14.197049+00:00",
+      "record_count": 1815,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/troup/2026-04-05.json"
+    },
+    {
+      "county": "twiggs",
+      "timestamp": "2026-04-05T16:58:17.990726+00:00",
+      "record_count": 123,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/twiggs/2026-04-05.json"
+    },
+    {
+      "county": "upson",
+      "timestamp": "2026-04-05T16:58:33.701262+00:00",
+      "record_count": 604,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/upson/2026-04-05.json"
+    },
+    {
+      "county": "union",
+      "timestamp": "2026-04-05T16:58:35.748126+00:00",
+      "record_count": 1307,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/union/2026-04-05.json"
+    },
+    {
+      "county": "walker",
+      "timestamp": "2026-04-05T16:58:58.724698+00:00",
+      "record_count": 1825,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/walker/2026-04-05.json"
+    },
+    {
+      "county": "walton",
+      "timestamp": "2026-04-05T16:59:03.171524+00:00",
+      "record_count": 2507,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/walton/2026-04-05.json"
+    },
+    {
+      "county": "ware",
+      "timestamp": "2026-04-05T16:59:14.509930+00:00",
+      "record_count": 749,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/ware/2026-04-05.json"
+    },
+    {
+      "county": "warren",
+      "timestamp": "2026-04-05T16:59:14.892205+00:00",
+      "record_count": 71,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/warren/2026-04-05.json"
+    },
+    {
+      "county": "washington",
+      "timestamp": "2026-04-05T16:59:24.954281+00:00",
+      "record_count": 313,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/washington/2026-04-05.json"
+    },
+    {
+      "county": "wayne",
+      "timestamp": "2026-04-05T16:59:28.114853+00:00",
+      "record_count": 740,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/wayne/2026-04-05.json"
+    },
+    {
+      "county": "webster",
+      "timestamp": "2026-04-05T16:59:34.153010+00:00",
+      "record_count": 17,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/webster/2026-04-05.json"
+    },
+    {
+      "county": "wheeler",
+      "timestamp": "2026-04-05T16:59:38.625503+00:00",
+      "record_count": 62,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/wheeler/2026-04-05.json"
+    },
+    {
+      "county": "white",
+      "timestamp": "2026-04-05T16:59:48.780139+00:00",
+      "record_count": 1079,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/white/2026-04-05.json"
+    },
+    {
+      "county": "wilcox",
+      "timestamp": "2026-04-05T17:00:00.543243+00:00",
+      "record_count": 73,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/wilcox/2026-04-05.json"
+    },
+    {
+      "county": "whitfield",
+      "timestamp": "2026-04-05T17:00:03.874060+00:00",
+      "record_count": 1725,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/whitfield/2026-04-05.json"
+    },
+    {
+      "county": "wilkes",
+      "timestamp": "2026-04-05T17:00:11.378165+00:00",
+      "record_count": 220,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/wilkes/2026-04-05.json"
+    },
+    {
+      "county": "wilkinson",
+      "timestamp": "2026-04-05T17:00:14.051975+00:00",
+      "record_count": 162,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/wilkinson/2026-04-05.json"
+    },
+    {
+      "county": "worth",
+      "timestamp": "2026-04-05T17:00:23.356287+00:00",
+      "record_count": 265,
+      "s3_path": "s3://dealscout-data-dev/bronze/property_sales_hh/worth/2026-04-05.json"
+    }
+  ],
+  "failed": []
+}

@@ -29,8 +29,8 @@ export interface SalesComp {
   address: string;
   lat: number;
   lon: number;
-  bedrooms: number;
-  bathrooms: number;
+  bedrooms: number | null;
+  bathrooms: number | null;
   salePrice: number;
   squareFeet?: number;
   saleDate?: string; // YYYY-MM
@@ -46,12 +46,22 @@ export interface SubjectProperty {
   zoning: string | null;
 }
 
+export interface HudFmr {
+  Efficiency: number;
+  'One-Bedroom': number;
+  'Two-Bedroom': number;
+  'Three-Bedroom': number;
+  'Four-Bedroom': number;
+  year: number;
+}
+
 export interface ClaudeAnalysisResult {
   subjectProperty: SubjectProperty;
   estimatedValue: number;
   rentRanges: { conservative: number; median: number; optimistic: number };
-  comps: RentalComp[];
+  comps: RentalComp[];       // kept for history compat; will be empty going forward
   salesComps: SalesComp[];
+  hudFmr?: HudFmr | null;
   summary: string;
 }
 

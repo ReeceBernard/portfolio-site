@@ -40,11 +40,9 @@ export default function MortgageInput({
   );
 
   const getProxyUrl = () => {
-    if (process.env.NODE_ENV == "development") {
-      return "http://localhost:3000";
-    }
-
-    return "https://rb-dev-api.vercel.app";
+    return import.meta.env.DEV
+      ? "http://localhost:3000"
+      : import.meta.env.VITE_API_BASE_URL;
   };
 
   const getCachedRate = (series: string): FredApiResponse | null => {

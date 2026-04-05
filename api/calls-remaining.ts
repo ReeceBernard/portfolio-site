@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import Redis from "ioredis";
 
 const DAILY_LIMIT = 100;
@@ -9,20 +9,23 @@ function todayKey() {
 
 const ALLOWED_ORIGIN = process.env.IS_DEV ? "http://localhost:5173" : "https://reecebernard.dev";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+const CORS = {
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Content-Type": "application/json",
+};
 
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "GET")
-    return res.status(405).json({ error: "Method not allowed" });
+export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+  const method = event.requestContext.http.method;
+  if (method === "OPTIONS") return { statusCode: 200, headers: CORS, body: "" };
+  if (method !== "GET") {
+    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: "Method not allowed" }) };
+  }
 
   const redisUrl = process.env.REDIS_URL ?? process.env.redis_REDIS_URL;
   if (!redisUrl) {
-    return res
-      .status(200)
-      .json({ callsRemaining: DAILY_LIMIT, limit: DAILY_LIMIT, used: 0 });
+    return { statusCode: 200, headers: CORS, body: JSON.stringify({ callsRemaining: DAILY_LIMIT, limit: DAILY_LIMIT, used: 0 }) };
   }
 
   const redis = new Redis(redisUrl);
@@ -30,8 +33,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const raw = await redis.get(todayKey());
     const used = raw ? parseInt(raw, 10) : 0;
     const callsRemaining = Math.max(0, DAILY_LIMIT - used);
-    return res.status(200).json({ callsRemaining, limit: DAILY_LIMIT, used });
+    return { statusCode: 200, headers: CORS, body: JSON.stringify({ callsRemaining, limit: DAILY_LIMIT, used }) };
   } finally {
     redis.disconnect();
   }
-}
+};

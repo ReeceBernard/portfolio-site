@@ -1,9 +1,9 @@
 import type { ClaudeAnalysisResult, ResolvedAddress } from "../types";
 
 function getProxyBase() {
-  return process.env.NODE_ENV === "development"
+  return import.meta.env.DEV
     ? "http://localhost:3000"
-    : "https://rb-dev-api.vercel.app";
+    : import.meta.env.VITE_API_BASE_URL;
 }
 
 export async function analyzeProperty(

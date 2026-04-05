@@ -8,6 +8,7 @@ interface Props {
   error: string | null;
   history: HistoryItem[];
   onLoadHistory: (item: HistoryItem) => void;
+  onDeleteHistory: (item: HistoryItem) => void;
   callsRemaining: number | null;
 }
 
@@ -22,7 +23,7 @@ const isValidManualAddress = (addr: string) =>
   addr.trim().split(/\s+/).length <= 12 &&
   isValidStreetAddress(addr);
 
-export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history, onLoadHistory, callsRemaining }) => {
+export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history, onLoadHistory, onDeleteHistory, callsRemaining }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [selected, setSelected] = useState<ResolvedAddress | null>(null);
@@ -98,7 +99,7 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
 
     if (!selected) return;
     if (!isValidStreetAddress(selected.displayName)) {
-      setAddressError('Please select a specific street address (e.g. 123 Main St, Austin, TX 78701).');
+      setAddressError('Please select a specific street address including zip code (e.g. 123 Main St, Austin, TX 78701).');
       return;
     }
     setAddressError(null);
@@ -164,7 +165,7 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
                 type="text"
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); if (selected) setSelected(null); }}
-                placeholder="123 Main St, Austin, TX"
+                placeholder="123 Main St, Austin, TX 78701"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 pr-8"
                 autoComplete="off"
               />
@@ -232,26 +233,28 @@ export const AddressStep: React.FC<Props> = ({ onSubmit, loading, error, history
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Recent Searches</h3>
           <ul className="space-y-2">
             {history.slice(0, 5).map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className="group relative">
                 <button
                   onClick={() => onLoadHistory(item)}
-                  className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-green-400 hover:bg-green-50 transition-colors group"
+                  className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-green-400 hover:bg-green-50 transition-colors"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {item.address.displayName.split(',').slice(0, 2).join(',')}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {new Date(item.searchedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        {' · '}Est. ${item.analysis.estimatedValue.toLocaleString()}
-                        {' · '}Median ${item.analysis.rentRanges.median.toLocaleString()}/mo
-                      </p>
-                    </div>
-                    <span className="ml-3 text-green-600 opacity-0 group-hover:opacity-100 transition-opacity text-sm font-medium">
-                      Load →
-                    </span>
+                  <div className="flex-1 min-w-0 pr-10">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {item.address.displayName.split(',').slice(0, 2).join(',')}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {new Date(item.searchedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {' · '}Est. ${item.analysis.estimatedValue.toLocaleString()}
+                      {item.analysis.rentRanges?.median != null && <>{' · '}Median ${item.analysis.rentRanges.median.toLocaleString()}/mo</>}
+                    </p>
                   </div>
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onDeleteHistory(item); }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Remove from history"
+                >
+                  ✕
                 </button>
               </li>
             ))}

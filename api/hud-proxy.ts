@@ -1,41 +1,44 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 const ALLOWED_ORIGIN = process.env.IS_DEV ? "http://localhost:5173" : "https://reecebernard.dev";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+const CORS = {
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Content-Type": "application/json",
+};
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+function ok(body: unknown): APIGatewayProxyResultV2 {
+  return { statusCode: 200, headers: CORS, body: JSON.stringify(body) };
+}
+function err(status: number, msg: string): APIGatewayProxyResultV2 {
+  return { statusCode: status, headers: CORS, body: JSON.stringify({ error: msg }) };
+}
 
-  const { zip, year } = req.query;
+export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+  const method = event.requestContext.http.method;
+  if (method === "OPTIONS") return { statusCode: 200, headers: CORS, body: "" };
+  if (method !== "GET") return err(405, "Method not allowed");
 
-  if (!zip || typeof zip !== 'string') {
-    return res.status(400).json({ error: 'Missing zip parameter' });
-  }
+  const { zip, year } = event.queryStringParameters ?? {};
+  if (!zip) return err(400, "Missing zip parameter");
 
   const apiKey = process.env.HUD_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'HUD API key not configured' });
+  if (!apiKey) return err(500, "HUD API key not configured");
 
-  // Default to most recent available year
-  const targetYear = year ?? new Date().getFullYear() - 1;
+  const targetYear = year ?? String(new Date().getFullYear() - 1);
 
   try {
-    const url = `https://www.huduser.gov/hudapi/public/fmr/data/${zip}?year=${targetYear}`;
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HUD API error: ${response.status}`);
-    }
-
+    const response = await fetch(
+      `https://www.huduser.gov/hudapi/public/fmr/data/${zip}?year=${targetYear}`,
+      { headers: { Authorization: `Bearer ${apiKey}` } }
+    );
+    if (!response.ok) throw new Error(`HUD API error: ${response.status}`);
     const data = await response.json();
-    return res.status(200).json(data);
+    return ok(data);
   } catch (error) {
-    console.error('HUD Proxy Error:', error);
-    return res.status(500).json({ error: 'Failed to fetch HUD data' });
+    console.error("HUD Proxy Error:", error);
+    return err(500, "Failed to fetch HUD data");
   }
-}
+};

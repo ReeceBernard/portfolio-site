@@ -42,6 +42,14 @@ export class LRUCache<K, V> {
     }
   }
 
+  delete(key: K): boolean {
+    const node = this.map.get(key);
+    if (!node) return false;
+    this.unlink(node);
+    this.map.delete(key);
+    return true;
+  }
+
   toArray(): V[] {
     const out: V[] = [];
     let cur = this.head.next;

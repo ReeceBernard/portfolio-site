@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ResolvedAddress, ClaudeAnalysisResult, RentTier, SubjectProperty } from '../types';
+import type { ResolvedAddress, ClaudeAnalysisResult, RentTier, SubjectProperty, HudFmr } from '../types';
 import { CompsMap } from './CompsMap';
 
 interface Props {
@@ -41,6 +41,65 @@ function PropertyStats({ p }: { p: SubjectProperty }) {
   );
 }
 
+const HUD_ROWS: { key: keyof Omit<HudFmr, 'year'>; label: string }[] = [
+  { key: 'Efficiency', label: 'Studio' },
+  { key: 'One-Bedroom', label: '1 BR' },
+  { key: 'Two-Bedroom', label: '2 BR' },
+  { key: 'Three-Bedroom', label: '3 BR' },
+  { key: 'Four-Bedroom', label: '4 BR' },
+];
+
+function HudFmrTable({ hud, subjectBeds }: { hud: HudFmr; subjectBeds?: number | null }) {
+  function bedsToKey(beds: number | null | undefined): keyof Omit<HudFmr, 'year'> | null {
+    if (beds == null) return null;
+    if (beds <= 0) return 'Efficiency';
+    if (beds === 1) return 'One-Bedroom';
+    if (beds === 2) return 'Two-Bedroom';
+    if (beds === 3) return 'Three-Bedroom';
+    return 'Four-Bedroom';
+  }
+  const highlightKey = bedsToKey(subjectBeds);
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-sm font-semibold text-gray-700">HUD Fair Market Rents ({hud.year})</h3>
+        <span className="text-xs text-gray-400">±20% range</span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="text-xs w-full border-collapse">
+          <thead>
+            <tr className="bg-amber-50 text-gray-500 text-left">
+              <th className="px-3 py-2 font-medium">Bedrooms</th>
+              <th className="px-3 py-2 font-medium text-right">Low (−20%)</th>
+              <th className="px-3 py-2 font-medium text-right">HUD FMR</th>
+              <th className="px-3 py-2 font-medium text-right">High (+20%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {HUD_ROWS.map(({ key, label }) => {
+              const fmr = hud[key];
+              if (fmr == null) return null;
+              const isSubject = key === highlightKey;
+              return (
+                <tr key={key} className={`border-t border-gray-100 ${isSubject ? 'bg-amber-50 font-semibold' : 'bg-white hover:bg-amber-50'}`}>
+                  <td className="px-3 py-2 text-gray-800">
+                    {label}{isSubject && <span className="ml-1.5 text-amber-600 text-xs">(subject)</span>}
+                  </td>
+                  <td className="px-3 py-2 text-right text-gray-500">${Math.round(fmr * 0.8).toLocaleString()}</td>
+                  <td className="px-3 py-2 text-right text-amber-700 font-semibold">${fmr.toLocaleString()}</td>
+                  <td className="px-3 py-2 text-right text-gray-500">${Math.round(fmr * 1.2).toLocaleString()}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-xs text-gray-400 mt-1.5">Source: HUD Office of Policy Development and Research. Rent estimates use the subject property's bedroom count.</p>
+    </div>
+  );
+}
+
 export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBack }) => {
   return (
     <div className="space-y-6">
@@ -53,47 +112,18 @@ export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBa
 
       <p className="text-gray-600 text-sm italic">{analysis.summary}</p>
 
-      <CompsMap subject={subject} comps={analysis.comps} salesComps={analysis.salesComps ?? []} />
+      <CompsMap subject={subject} comps={[]} salesComps={analysis.salesComps ?? []} />
 
       {/* Legend */}
       <div className="flex items-center gap-4 text-xs text-gray-500">
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-full bg-blue-400"></span> Rental comps ({analysis.comps.length})
-        </span>
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 rounded-full bg-violet-400"></span> Sales comps ({(analysis.salesComps ?? []).length})
         </span>
       </div>
 
-      {/* Rental comps table */}
-      {analysis.comps.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Rental Comps</h3>
-          <div className="overflow-x-auto">
-            <table className="text-xs w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-50 text-gray-500 text-left">
-                  <th className="px-3 py-2 font-medium">Address</th>
-                  <th className="px-3 py-2 font-medium">Beds/Baths</th>
-                  <th className="px-3 py-2 font-medium">Sqft</th>
-                  <th className="px-3 py-2 font-medium">Listed</th>
-                  <th className="px-3 py-2 font-medium text-right">Monthly Rent</th>
-                </tr>
-              </thead>
-              <tbody>
-                {analysis.comps.map((comp, i) => (
-                  <tr key={i} className="border-t border-gray-100 bg-white hover:bg-blue-50">
-                    <td className="px-3 py-2 text-gray-800">{comp.address}</td>
-                    <td className="px-3 py-2 text-gray-600">{comp.bedrooms}bd / {comp.bathrooms}ba</td>
-                    <td className="px-3 py-2 text-gray-600">{comp.squareFeet ? comp.squareFeet.toLocaleString() : '—'}</td>
-                    <td className="px-3 py-2 text-gray-500">{comp.listingDate ?? '—'}</td>
-                    <td className="px-3 py-2 text-right font-semibold text-blue-700">${comp.monthlyRent.toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+      {/* HUD FMR table */}
+      {analysis.hudFmr && typeof analysis.hudFmr.Efficiency === 'number' && (
+        <HudFmrTable hud={analysis.hudFmr} subjectBeds={analysis.subjectProperty?.bedrooms} />
       )}
 
       {/* Sales comps table */}
@@ -115,7 +145,7 @@ export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBa
                 {(analysis.salesComps ?? []).map((comp, i) => (
                   <tr key={i} className="border-t border-gray-100 bg-white hover:bg-violet-50">
                     <td className="px-3 py-2 text-gray-800">{comp.address}</td>
-                    <td className="px-3 py-2 text-gray-600">{comp.bedrooms}bd / {comp.bathrooms}ba</td>
+                    <td className="px-3 py-2 text-gray-600">{comp.bedrooms != null ? `${comp.bedrooms}bd` : '—'} / {comp.bathrooms != null ? `${comp.bathrooms}ba` : '—'}</td>
                     <td className="px-3 py-2 text-gray-600">{comp.squareFeet ? comp.squareFeet.toLocaleString() : '—'}</td>
                     <td className="px-3 py-2 text-gray-500">{comp.saleDate ?? '—'}</td>
                     <td className="px-3 py-2 text-right font-semibold text-violet-700">${comp.salePrice.toLocaleString()}</td>
@@ -128,7 +158,10 @@ export const CompsStep: React.FC<Props> = ({ subject, analysis, onContinue, onBa
       )}
 
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">Rent estimates</h3>
+        <h3 className="text-sm font-semibold text-gray-700 mb-1">Rent estimates</h3>
+        <p className="text-xs text-gray-400 mb-3">
+          {analysis.hudFmr ? 'Derived from HUD FMR ±20% for this bedroom count.' : 'AI estimate — no HUD data available for this zip.'}
+        </p>
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {tiers.map(({ tier, label, color }) => (
             <div key={tier} className={`border-2 rounded-lg p-2 sm:p-4 text-center transition-colors ${color}`}>

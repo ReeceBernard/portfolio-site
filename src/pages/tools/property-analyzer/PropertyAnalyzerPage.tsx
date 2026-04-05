@@ -2,8 +2,29 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type {
   AnalyzerStep, ResolvedAddress, ClaudeAnalysisResult,
-  Scenario, ScenarioParams, RentTier, HistoryItem,
+  Scenario, ScenarioParams, RentTier, HistoryItem, HudFmr,
 } from './types';
+
+function hudKeyForBedrooms(beds: number): keyof Omit<HudFmr, 'year'> {
+  if (beds <= 0) return 'Efficiency';
+  if (beds === 1) return 'One-Bedroom';
+  if (beds === 2) return 'Two-Bedroom';
+  if (beds === 3) return 'Three-Bedroom';
+  return 'Four-Bedroom';
+}
+
+function isValidHudFmr(hud: HudFmr | null | undefined): hud is HudFmr {
+  return hud != null && typeof hud.Efficiency === 'number';
+}
+
+function deriveHudRentRanges(hud: HudFmr, beds: number) {
+  const fmr = hud[hudKeyForBedrooms(beds)];
+  return {
+    conservative: Math.round(fmr * 0.80),
+    median: Math.round(fmr),
+    optimistic: Math.round(fmr * 1.20),
+  };
+}
 import { buildScenario } from './lib/calculations';
 import { analyzeProperty, fetchCallsRemaining } from './lib/claude';
 import { useLocalStorage, TTL } from '../../../hooks/use-local-storage';
@@ -61,9 +82,9 @@ const STEP_LABELS: Record<AnalyzerStep, string> = {
 };
 
 function getProxyBase() {
-  return process.env.NODE_ENV === 'development'
+  return import.meta.env.DEV
     ? 'http://localhost:3000'
-    : 'https://rb-dev-api.vercel.app';
+    : import.meta.env.VITE_API_BASE_URL;
 }
 
 export const PropertyAnalyzerPage: React.FC = () => {
@@ -126,7 +147,11 @@ export const PropertyAnalyzerPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const { result: analysis, callsRemaining: remaining } = await analyzeProperty(address);
+      const { result: rawAnalysis, callsRemaining: remaining } = await analyzeProperty(address);
+      const beds = rawAnalysis.subjectProperty?.bedrooms;
+      const analysis: ClaudeAnalysisResult = isValidHudFmr(rawAnalysis.hudFmr) && beds != null
+        ? { ...rawAnalysis, rentRanges: deriveHudRentRanges(rawAnalysis.hudFmr, beds) }
+        : rawAnalysis;
       setCallsRemaining(remaining);
       const scenarios = TIERS.map((tier) =>
         buildScenario(
@@ -178,6 +203,12 @@ export const PropertyAnalyzerPage: React.FC = () => {
       buildScenario(crypto.randomUUID(), TIER_NAMES[tier], tier, makeDefaultParams(item.analysis, tier, interestRate))
     );
     setState({ step: 'comps', address: item.address, analysis: item.analysis, scenarios });
+  };
+
+  const handleDeleteHistory = (item: HistoryItem) => {
+    historyCache.current.delete(item.address.displayName);
+    saveHistoryCache(historyCache.current);
+    setHistoryItems(historyCache.current.toArray());
   };
 
   const handleDeleteScenario = (id: string) => {
@@ -236,6 +267,7 @@ export const PropertyAnalyzerPage: React.FC = () => {
             error={error}
             history={historyItems}
             onLoadHistory={handleLoadHistory}
+            onDeleteHistory={handleDeleteHistory}
             callsRemaining={callsRemaining}
           />
         )}
