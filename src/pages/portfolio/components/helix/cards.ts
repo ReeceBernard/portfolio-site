@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from './config';
 
 const { strands, perStrand } = config.scene;
 const { palette, paletteStrandOffset } = config.appearance;
@@ -20,7 +20,7 @@ export type CardMeta = {
 // strand than photos, so the set repeats (cycles) to fill every slot — each
 // strand starts its cycle at a different offset so the repeats don't line up.
 const photoModules = import.meta.glob<{ default: string }>(
-  "../../../../assets/helix-photos/*.{jpg,jpeg,png,webp,avif}",
+  '../../../../assets/helix-photos/*.{jpg,jpeg,png,webp,avif}',
   { eager: true },
 );
 const photos = Object.keys(photoModules)

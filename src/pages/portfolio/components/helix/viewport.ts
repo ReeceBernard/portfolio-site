@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from './config';
 
 export type Viewport = {
   span: number;
@@ -17,7 +17,7 @@ export const applyViewport = (scene: HTMLElement, view: Viewport): void => {
   view.span = window.innerHeight * config.scene.spanFactor;
   view.radius = bp.radius;
 
-  scene.style.setProperty("--card-width", `${bp.cardWidth}px`);
-  scene.style.setProperty("--card-height", `${bp.cardHeight}px`);
-  scene.style.setProperty("--perspective", `${bp.perspective}px`);
+  scene.style.setProperty('--card-width', `${bp.cardWidth}px`);
+  scene.style.setProperty('--card-height', `${bp.cardHeight}px`);
+  scene.style.setProperty('--perspective', `${bp.perspective}px`);
 };

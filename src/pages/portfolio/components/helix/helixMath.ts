@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from './config';
 
 const { turns } = config.scene;
 const { brightnessFloor, maxBlur } = config.appearance;

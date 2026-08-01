@@ -26,13 +26,11 @@ export const HelixHero = () => {
     window.addEventListener('resize', handleResize);
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
     const start = performance.now();
-    let frameId: number;
+    let frameId: number | null = null;
+    let visible = false;
 
-    const frame = (now: number) => {
-      const elapsed = reducedMotion.matches ? 0 : (now - start) / 1000;
-
+    const render = (elapsed: number) => {
       cardRefs.current.forEach((el, i) => {
         if (!el) return;
         const card = CARDS[i]!;
@@ -42,13 +40,49 @@ export const HelixHero = () => {
         el.style.transform = helixTransform(angle, y, view.radius);
         el.style.filter = depthFilter(depthOf(angle));
       });
-
-      frameId = requestAnimationFrame(frame);
     };
-    frameId = requestAnimationFrame(frame);
+
+    const frame = (now: number) => {
+      render((now - start) / 1000);
+      frameId = visible ? requestAnimationFrame(frame) : null;
+    };
+
+    // Ambient rotation only costs anything while the hero is on screen and
+    // motion isn't disabled — otherwise render one static frame and stop.
+    const startLoop = () => {
+      if (frameId !== null) return;
+      if (reducedMotion.matches) {
+        render(0);
+      } else {
+        frameId = requestAnimationFrame(frame);
+      }
+    };
+
+    const stopLoop = () => {
+      if (frameId !== null) cancelAnimationFrame(frameId);
+      frameId = null;
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry!.isIntersecting;
+        if (visible) startLoop();
+        else stopLoop();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(scene);
+
+    const handleMotionChange = () => {
+      stopLoop();
+      if (visible) startLoop();
+    };
+    reducedMotion.addEventListener('change', handleMotionChange);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      stopLoop();
+      observer.disconnect();
+      reducedMotion.removeEventListener('change', handleMotionChange);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
