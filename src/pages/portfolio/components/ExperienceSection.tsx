@@ -2,7 +2,7 @@ import { EXPERIENCE } from '../../home/lib/contants';
 
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="scroll-mt-14 bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-900 mb-10">Experience</h2>
         <div className="space-y-6">
