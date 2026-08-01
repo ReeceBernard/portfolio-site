@@ -1,12 +1,28 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const REVEAL_THRESHOLD = 120;
+
 export const Nav = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > REVEAL_THRESHOLD);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <nav className="bg-white/90 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+    <nav
+      className={`bg-white/90 backdrop-blur-sm border-b border-gray-100 fixed top-0 inset-x-0 z-50 transition-transform duration-300 ${
+        visible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <span className="font-semibold text-gray-900 font-mono text-sm">reece.bernard</span>

@@ -1,0 +1,92 @@
+.helix-scene {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: #0d0d0c;
+  perspective: var(--perspective, 1200px);
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+}
+
+.helix-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.helix-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--card-width, 225px);
+  height: var(--card-height, 155px);
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  will-change: transform, filter;
+}
+
+/* everything fades into the dark toward the edges of the frame, hiding the
+   point where each strand wraps from bottom back to top */
+.helix-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, #0d0d0c 0%, transparent 18%, transparent 82%, #0d0d0c 100%),
+    radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, rgba(13, 13, 12, 0.9) 100%);
+}
+
+.helix-overlay {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 2;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.helix-overlay > * {
+  pointer-events: auto;
+}
+
+.helix-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.helix-title {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.15rem 0 0.85rem;
+}
+
+.helix-scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.helix-scroll-cue:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .helix-overlay {
+    left: 2.5rem;
+    bottom: 2.5rem;
+  }
+}
