@@ -44,21 +44,7 @@ export const ToolsPage: React.FC = () => {
             </div>
           </Link>
 
-          {/* Property Analyzer */}
-          <Link to="/tools/property-analyzer" className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow group">
-            <div className="px-6 py-4 bg-blue-50 border-b group-hover:bg-blue-100 transition-colors">
-              <h3 className="text-lg font-semibold text-blue-800">
-                AI Property Analyzer
-              </h3>
-              <p className="text-blue-600 text-sm mt-1">
-                AI-powered rental comps, market analysis, and 30-year investment projections
-              </p>
-            </div>
-            <div className="p-6 flex items-center justify-between">
-              <p className="text-gray-600 text-sm">Enter any US address to get rental market comps, multi-scenario analysis, and downloadable PDF reports — powered by Claude.</p>
-              <span className="ml-4 text-blue-600 font-semibold whitespace-nowrap group-hover:translate-x-1 transition-transform">Open →</span>
-            </div>
-          </Link>
+          {/* AI Property Analyzer hidden temporarily — currently broken, page/route left in place */}
         </div>
       </main>
 
